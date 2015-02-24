@@ -13,6 +13,11 @@ public class MessageLibrary {
 		new MessageSender(hostName, portNumber, message).start();
 	}
 	
+	// Assumes host is localhost
+	public static void sendMessage(int portNumber, String message) {
+		new MessageSender("localhost", portNumber, message).start();
+	}
+	
 	static class MessageSender extends Thread  {
 		
 		String hostName;
@@ -56,20 +61,24 @@ public class MessageLibrary {
 	}
 
 	// Read the contents of a file into a string.
-	public static String readFile(String file) throws IOException {
-		BufferedReader reader = new BufferedReader(new FileReader(file));
-		String line = null;
-		StringBuilder stringBuilder = new StringBuilder();
-		String ls = System.getProperty("line.separator");
-		
-		while((line = reader.readLine()) != null) {
-			stringBuilder.append(line);
-			stringBuilder.append(ls);
-		}
-		return stringBuilder.toString();
+	public static byte[] readFile(String fileName) throws IOException {
+		File file = new File(fileName);
+		byte fileContent[] = new byte[(int) file.length()];
+		FileInputStream input = new FileInputStream(file);
+		input.read(fileContent);
+		return fileContent;
 	}
 	
-	// Sends an HTTP response.
+	
+	// Sends an HTTP response given a string of bytes
+	public static void sendHttpResponse(HttpExchange exchange, byte response[]) throws IOException {
+		exchange.sendResponseHeaders(200, response.length);
+		OutputStream os = exchange.getResponseBody();
+		os.write(response);
+		os.close();
+	}
+	
+	// Sends an HTTP response given a string
 	public static void sendHttpResponse(HttpExchange exchange, String response) throws IOException {
 		exchange.sendResponseHeaders(200, response.length());
 		OutputStream os = exchange.getResponseBody();
