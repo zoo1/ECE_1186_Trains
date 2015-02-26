@@ -1,0 +1,154 @@
+Line	Section	Block Number	Block Length (m)	Block Grade (%)	Speed Limit (Km/Hr)	Infrastructure	ELEVATION (M)	CUMALTIVE ELEVATION (M)	Switch Block	Arrow Direction	
+Red	A	1	50	0.5	40		0.50	0.50	Switch 6	Head	
+Red	A	2	50	1	40		1.00	1.50			
+Red	A	3	50	1.5	40		1.50	3.00		Head	
+Red	B	4	50	2	40		2.00	5.00		Head	
+Red	B	5	50	1.5	40		2.50	7.50			
+Red	B	6	50	1	40		3.00	10.50		Head	
+Red	C	7	75	0.5	40	STATION: SHADYSIDE	5.25	15.75		Head	
+Red	C	8	75	0	40		6.00	21.75			
+Red	C	9	75	0	40	SWITCH TO/FROM YARD	6.75	28.50	Switch 12	Head	
+Red	D	10	75	0	40		7.50	36.00	Switch 12	Head	
+Red	D	11	75	-0.5	40		8.25	44.25			
+Red	D	12	75	-0.5	40		9.00	53.25		Head	
+Red	E	13	68.4	-1	40		8.89	62.14		Head	
+Red	E	14	60	-1	40		8.40	70.54			
+Red	E	15	60	-1	40	SWITCH	9.00	79.54	Switch 6	Head	
+Red	F	16	50	-0.5	40	STATION: HERRON AVE	8.00	87.54	Switch 6	Head	
+Red	F	17	200	-0.5	55		34.00	121.54			
+Red	F	18	400	-0.06025	70		72.00	193.54			
+Red	F	19	400	0	70		76.00	269.54			
+Red	F	20	200	0	70		40.00	309.54		Head	
+Red	G	21	100	0	55	STATION; SWISSVILLE	21.00	330.54		Head	
+Red	G	22	100	0	55		22.00	352.54			
+Red	G	23	100	0	55		23.00	375.54		Head	
+Red	H	24	50	0	70	UNDERGROUND	12.00	387.54		Head	
+Red	H	25	50	0	70	STATION;    PENN STATION; UNDERGROUND	12.50	400.04			
+Red	H	26	50	0	70	UNDERGROUND	13.00	413.04			
+Red	H	27	50	0	70	SWITCH; UNDERGROUND	13.50	426.54	Switch 7		
+Red	H	28	50	0	70	UNDERGROUND	14.00	440.54	Switch 7		
+Red	H	29	60	0	70	UNDERGROUND	17.40	457.94			
+Red	H	30	60	0	70	UNDERGROUND	18.00	475.94			
+Red	H	31	50	0	70	UNDERGROUND	15.50	491.44			
+Red	H	32	50	0	70	SWITCH; UNDERGROUND	16.00	507.44	Switch 8		
+Red	H	33	50	0	70	UNDERGROUND	16.50	523.94	Switch 8		
+Red	H	34	50	0	70	UNDERGROUND	17.00	540.94			
+Red	H	35	50	0	70	STATION;     STEEL PLAZA; UNDERGROUND	17.50	558.44			
+Red	H	36	50	0	70	UNDERGROUND	18.00	576.44			
+Red	H	37	50	0	70	UNDERGROUND	18.50	594.94			
+Red	H	38	50	0	70	SWITCH; UNDERGROUND	19.00	613.94	Switch 9		
+Red	H	39	50	0	70	UNDERGROUND	19.50	633.44	Switch 9		
+Red	H	40	60	0	70	UNDERGROUND	24.00	657.44			
+Red	H	41	60	0	70	UNDERGROUND	24.60	682.04			
+Red	H	42	50	0	70	UNDERGROUND	21.00	703.04			
+Red	H	43	50	0	70	SWITCH; UNDERGROUND	21.50	724.54	Switch 10		
+Red	H	44	50	0	70	UNDERGROUND	22.00	746.54	Switch 10		
+Red	H	45	50	0	70	STATION;     FIRST AVE; UNDERGROUND	22.50	769.04		Head	
+Red	I	46	75	0	70	UNDERGROUND	34.50	803.54		Head	
+Red	I	47	75	0	70	RAILWAY CROSSING	35.25	838.79			
+Red	I	48	75	0	70	STATION; STATION SQUARE	36.00	874.79		Head	
+Red	J	49	50	0	60		24.50	899.29		Head	
+Red	J	50	50	0	60		25.00	924.29			
+Red	J	51	50	0	55		25.50	949.79			
+Red	J	52	43.2	0	55	SWITCH	22.46	972.26	Switch 11		
+Red	J	53	50	0	55		26.50	998.76	Switch 11		
+Red	J	54	50	0	55		27.00	1025.76		Head	
+Red	K	55	75	0.5	55		41.25	1067.01		Head	
+Red	K	56	75	0.5	55		42.00	1109.01			
+Red	K	57	75	0.5	55		42.75	1151.76		Head	
+Red	L	58	75	1	55		43.50	1195.26		Head	
+Red	L	59	75	0.5	55		44.25	1239.51			
+Red	L	60	75	0	55	STATION; SOUTH HILLS JUNCTION	45.00	1284.51		Head	
+Red	M	61	75	-0.5	55		45.75	1330.26		Head	
+Red	M	62	75	-1	55		46.50	1376.76			
+Red	M	63	75	-1	55		47.25	1424.01		Head	
+Red	N	64	75	-0.5	55		48.00	1472.01		Head	
+Red	N	65	75	0	55		48.75	1520.76			
+Red	N	66	75	0	55		49.50	1570.26	Switch 11	Head	
+Red	O	67	50	0	55	UNDERGROUND	33.50	1603.76	Switch 10	Head/Head	
+Red	P	68	50	0	55	UNDERGROUND	34.00	1637.76		Head	
+Red	P	69	50	0	55	UNDERGROUND	34.50	1672.26			
+Red	P	70	50	0	55	UNDERGROUND	35.00	1707.26		Head	
+Red	Q	71	50	0	55	UNDERGROUND	35.50	1742.76	Switch 9	Head/Head	
+Red	R	72	50	0	55	UNDERGROUND	36.00	1778.76	Switch 8	Head/Head	
+Red	S	73	50	0	55	UNDERGROUND	36.50	1815.26		Head	
+Red	S	74	50	0	55	UNDERGROUND	37.00	1852.26			
+Red	S	75	50	0	55	UNDERGROUND	37.50	1889.76		Head	
+Red	T	76	50	0	55	UNDERGROUND	38.00	1927.76	Switch 7	Head/Head	
+Red	U	77	50	0	35		38.50	1966.26	Switch 12	Head/Head	
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
