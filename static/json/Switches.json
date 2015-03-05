@@ -1,0 +1,16 @@
+[
+{"Name": "Switch 0", 	"Line":"Green",		"Block_Numbers": [61, 62, 152]},
+{"Name": "Switch 1", 	"Line":"Green",		"Block_Numbers": [1, 12, 13]},
+{"Name": "Switch 2", 	"Line":"Green",		"Block_Numbers": [28, 29, 150]},
+{"Name": "Switch 3", 	"Line":"Green",		"Block_Numbers": [57, 58, 151]},
+{"Name": "Switch 4", 	"Line":"Green",		"Block_Numbers": [76, 77, 101]},
+{"Name": "Switch 5", 	"Line":"Green",		"Block_Numbers": [85, 86, 100]},
+
+{"Name": "Switch 6", 	"Line":"Red",		"Block_Numbers": [1, 15, 16]},
+{"Name": "Switch 7", 	"Line":"Red",		"Block_Numbers": [27, 28, 76]},
+{"Name": "Switch 8", 	"Line":"Red",		"Block_Numbers": [32, 33, 72]},
+{"Name": "Switch 9", 	"Line":"Red",		"Block_Numbers": [38, 39, 71]},
+{"Name": "Switch 10", 	"Line":"Red",		"Block_Numbers": [43, 44, 67]},
+{"Name": "Switch 11", 	"Line":"Red",		"Block_Numbers": [52, 53, 66]},
+{"Name": "Switch 12", 	"Line":"Red",		"Block_Numbers": [9, 10, 77]}
+]

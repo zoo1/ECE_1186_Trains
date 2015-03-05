@@ -1,0 +1,90 @@
+div.flex {
+	margin-right: 0px;
+	margin-left: 0px;
+}
+
+#main-container td {
+	line-height: 1;
+}
+
+#track-table-body tr:hover,
+#train-list-body tr:hover {
+	background-color: #B3E5FC;
+}
+
+#track-table-body tr.selected,
+#train-list-body tr.selected {
+	background-color: #03A9F4;
+	color: white;
+}
+
+#main-container {
+	position: relative;
+}
+
+/* Track Status */
+
+#train-picture {
+	width: 400px;
+	padding: 5px;
+	border-right: 2px solid #E7E7E7;
+}
+
+#track-info-sidebar {
+	padding: 5px;
+	border-left: 2px solid #E7E7E7;
+	position: relative;
+}
+
+#track-table-container {
+	position: relative;
+	overflow-y: auto;
+}
+
+#track-info-table td{
+	/* border-top: none; */
+}
+
+#track-administration-header {
+	border-top: 2px solid #E7E7E7;
+	margin-top: 0px;
+	padding-top: 15px;
+}
+
+#sidebar-saved-alert {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	margin: 5px 10px;
+}
+
+#train-table-container {
+	position: relative;
+}
+
+#train-info-sidebar {
+	border-left: 2px solid #E7E7E7;
+}
+
+#train-info-wrapper {
+	padding: 5px;
+}
+
+#train-info-wrapper > div{
+	padding-bottom: 10px;
+}
+
+h2.heading {
+	padding-bottom: 5px;
+	border-bottom: 2px solid #E7E7E7;
+}
+
+select.fixheight {
+	line-height: 1.7;
+	height: 30px;
+}
+
+.icon-padding {
+	padding: 0 5px;
+}
