@@ -78,6 +78,17 @@ public class MessageLibrary {
 		os.close();
 	}
 	
+	// Reconstructs a hash table given an input string.
+	public static Hashtable<String, String> stringToHashtable(String input) {
+		Hashtable<String, String> result = new Hashtable<String, String>();
+		String tuples[] = input.replace(", ", ",").split(",");
+		for (int index = 0; index < tuples.length; index++) {
+			String pair[] = tuples[index].split("=");
+			result.put(pair[0], pair[1]);
+		}
+		return result;
+	}
+	
 	// Sends an HTTP response given a string
 	public static void sendHttpResponse(HttpExchange exchange, String response) throws IOException {
 		exchange.sendResponseHeaders(200, response.length());

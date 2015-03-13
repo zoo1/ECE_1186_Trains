@@ -6,6 +6,12 @@ $(document).ready(function() {
 /* ------------------------------------------------------------ SHOWING / HIDING MODULES ------------------------------------------------------------ */
 function initModules() {
 	showModule("TrackStatus");
+	$(document.querySelector("html")).keypress(function(event) {
+		if (event.keyCode == 47) {
+			$("#track-search").focus();
+			event.preventDefault();
+		}
+	});
 	$("#execution-start-time").timepicker({step: 5}).val("00:00");
 }
 
@@ -59,6 +65,25 @@ function trackModelConstructor() {
 	self.trackList = ko.observableArray();
 	self.currentTrackRow = ko.observable(-1);
 	self.currentRowObject = ko.observable();
+	
+	self.SearchTerm = ko.observable("");
+	self.TrackListFiltered = ko.computed(function() {
+		return ko.utils.arrayFilter(self.trackList(), function(track) {
+			if (self.SearchTerm().length == 0) {
+				return true;
+			}
+			var trackString = JSON.stringify(track).toLowerCase().replace(/"/g, "").replace("'", "").replace("block_number", "block");
+			if (trackString.indexOf(self.SearchTerm().toLowerCase()) == -1) {
+				return false;
+			}
+			return true;
+		});
+	});
+	self.clearSearch = function(obj, event) {
+		if (event.keyCode == 27) {
+			self.SearchTerm("");
+		}
+	};
 		
 	self.selectTrack = function(data, element) {
 		$(".track-data-row").removeClass("selected");
@@ -278,16 +303,18 @@ function pauseTime() {
 }
 
 /* ------------------------------------------------------------ NOTIFICATION CODE ------------------------------------------------------------ */
-function trackSavedNotification() {
+function trackSavedNotification(obj) {
 	$("#sidebar-saved-alert").show();
-	sendStringToServer("Track maintenance was changed.");
 	setTimeout(function() {
 		$("#sidebar-saved-alert").fadeOut();
 	}, 1500);
-}
-
-function weatherChanged() {
-	sendStringToServer("Weather was changed.");
+	var data = trackDataModel.currentRowObject();
+	var message = {
+		Type: "Maintenance",
+		Block: data.Block_Number,
+		Maintenance: (obj.value == "Closed")
+	};
+	sendObjectToServer(message);
 }
 
 /* ------------------------------------------------------------ SERVER COMMUNICATION ------------------------------------------------------------ */
@@ -301,7 +328,10 @@ function objToGetString(object) {
 }
 
 function sendObjectToServer(obj) {
-	sendStringToServer(JSON.stringify(obj));
+	$.ajax({
+		url: "/handlers/relay_message?" + objToGetString(obj),
+		type: "get"
+	});
 }
 
 function sendStringToServer(str) {

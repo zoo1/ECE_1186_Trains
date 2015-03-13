@@ -94,6 +94,10 @@
 	<div id="main-container" class="flex row grow">
 		<div id="TrackStatus" class="flex row grow view-module">
 			<div id="train-picture" class="flex col static">
+				<div class="input-group" style="border-bottom: 2px solid #E7E7E7; padding-bottom: 5px;">
+					<span class="input-group-addon">Search</span>
+					<input id="track-search" type="text" class="form-control" data-bind="value: SearchTerm, valueUpdate: 'input', event: {keyup: clearSearch}">
+				</div>
 				<img src="TrainLines.png">
 			</div>
 			<div id="track-table-container" class="flex col grow">
@@ -107,7 +111,7 @@
 							<th>Occupancy</th>
 						</tr>
 					</thead>
-					<tbody id="track-table-body" data-bind="foreach: trackList">
+					<tbody id="track-table-body" data-bind="foreach: TrackListFiltered">
 						<tr class="unselectable track-data-row" data-bind="click: $parent.selectTrack, attr: {'dataindex': $index}">
 							<td data-bind="text: Line"></td>
 							<td data-bind="text: Section"></td>
@@ -179,23 +183,20 @@
 							</td>
 						</tr>
 						<tr>
+							<td>Weather</td>
+							<td><span data-bind="text: Weather"></span></td>
+						</tr>
+						<tr>
 							<td>Track Status</td>
 							<td><span data-bind="text: Status"></span></td>
-						</tr>						
+						</tr>				
 					</table>
 					<h2 id="track-administration-header" >Administration</h2>
 					<div class="input-group">
 						<span class="input-group-addon">Maintenance</span>
-						<select class="fixheight" data-bind="value: Maintenance" onchange="trackSavedNotification()">
+						<select class="fixheight" data-bind="value: Maintenance" onchange="trackSavedNotification(this)">
 							<option value="Open">Open</option>
 							<option value="Closed">Closed</option>
-						</select>
-						<span class="input-group-addon">Weather</span>
-						<select class="fixheight" data-bind="value: Weather" onchange="weatherChanged()">
-							<option value="Clear">Clear</option>
-							<option value="Snow">Snow</option>
-							<option value="Rain">Rain</option>
-							<option value="Fog">Fog</option>
 						</select>
 					</div>
 					<div id="sidebar-saved-alert" class="alert alert-success" style="display: none">Changes Saved!</div>

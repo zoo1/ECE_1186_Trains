@@ -81,9 +81,10 @@ public class CTCServer {
 					MessageLibrary.sendHttpResponse(exchange, "Deleted.");
 					break;
 				case "relay_message":
-					String message = getParams.get("msg");
+					String message = getParams.toString();
 					MessageLibrary.httpAcknowledge(exchange);
 					System.out.println(message);
+					// MessageLibrary.sendMessage(socketListenerNumber, message); // CHANGE THIS TO SHALINS NUMBER
 					break;
 				default:
 					MessageLibrary.sendHttpResponse(exchange, "Handler " + handlerName + " not found.");
