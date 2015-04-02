@@ -77,6 +77,7 @@ public class CTCServer {
 					MessageLibrary.sendHttpResponse(exchange, "Deleted.");
 					break;
 				case "relay_message":
+<<<<<<< HEAD
 					String message = getParams.get("msg");
 					message = message.replaceAll("/equals/", "=");
 					message = message.replaceAll("/lsbracket/", "{");
@@ -86,6 +87,12 @@ public class CTCServer {
 					MessageLibrary.httpAcknowledge(exchange);
 					System.out.println("Sending to Track Controller: " + message);
 					// MessageLibrary.sendMessage(8003, message); // UNCOMMENT THIS
+=======
+					String message = getParams.toString();
+					MessageLibrary.httpAcknowledge(exchange);
+					System.out.println(message);
+					// MessageLibrary.sendMessage(socketListenerNumber, message); // CHANGE THIS TO SHALINS NUMBER
+>>>>>>> origin/CTCServer
 					break;
 				case "send_all":
 					MessageLibrary.httpAcknowledge(exchange);
