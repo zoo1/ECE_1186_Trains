@@ -183,24 +183,18 @@
 							</td>
 						</tr>
 						<tr>
-<<<<<<< HEAD
 							<td>Lights</td>
 							<td><span data-bind="text: Lights"></span></td>
 						</tr>
 						<tr>
-=======
->>>>>>> origin/CTCServer
 							<td>Weather</td>
 							<td><span data-bind="text: Weather"></span></td>
 						</tr>
 						<tr>
-<<<<<<< HEAD
 							<td>Heater</td>
 							<td><span data-bind="text: Heater"></span></td>
 						</tr>
 						<tr>
-=======
->>>>>>> origin/CTCServer
 							<td>Track Status</td>
 							<td><span data-bind="text: Status"></span></td>
 						</tr>				
@@ -334,8 +328,11 @@
 						<input id="dwell-time" type="number" class="form-control">
 					</div>
 					<div class="btn-group" style="position: relative; width: 100%">
-						<button type="button" style="width: 50%"class="btn btn-default" onclick="addStop()">Add Stop</button>
-						<button type="button" style="width: 50%"class="btn btn-default" data-bind="click: trainsDataModel.currentTrainObject().activate, disable: !$parent.executing()">Dispatch Immediately</button>
+						<button type="button" style="width: 30%"class="btn btn-default" onclick="addStop()">Add Stop</button>
+						<button type="button" style="width: 70%"class="btn btn-default" data-bind="click: trainsDataModel.currentTrainObject().activate, disable: !$parent.executing()"
+							title="Button: immediately sends schedule for execution, ignoring start time.">
+							Dispatch Now With Schedule
+						</button>
 					</div>
 					
 					<div class="flex col grow">

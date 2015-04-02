@@ -77,11 +77,7 @@ function trackModelConstructor() {
 			if (self.SearchTerm().length == 0) {
 				return true;
 			}
-<<<<<<< HEAD
 			var trackString = JSON.stringify(track()).toLowerCase().replace(/"/g, "").replace("'", "").replace("block_number", "block");
-=======
-			var trackString = JSON.stringify(track).toLowerCase().replace(/"/g, "").replace("'", "").replace("block_number", "block");
->>>>>>> origin/CTCServer
 			if (trackString.indexOf(self.SearchTerm().toLowerCase()) == -1) {
 				return false;
 			}
@@ -339,6 +335,8 @@ function trainObjectModel(name, line, block, speed, authority, schedule, ID) {
 			self.Suggested_Speed(MPH);
 			// Mark train as active.
 			self.Active(true);
+			// Reset the destinations because it's a new schedule.
+			self.NextDestinationIndex(0);
 		}
 	};
 	
@@ -543,17 +541,8 @@ function trackSavedNotification(obj) {
 		$("#sidebar-saved-alert").fadeOut();
 	}, 1500);
 	var data = trackDataModel.currentRowObject();
-<<<<<<< HEAD
 	var maintenanceMessage = "CTC : " + data.Line + " " + data.Block_Number + " : set, Maintenance = " + (obj.value == "Closed");
 	sendStringToServer(maintenanceMessage);
-=======
-	var message = {
-		Type: "Maintenance",
-		Block: data.Block_Number,
-		Maintenance: (obj.value == "Closed")
-	};
-	sendObjectToServer(message);
->>>>>>> origin/CTCServer
 }
 
 /* ------------------------------------------------------------ SERVER COMMUNICATION ------------------------------------------------------------ */
