@@ -1,4 +1,5 @@
-[
+{
+"stations": [
 {"Name": "Pioneer",			"Line": "Green", 	"Block": 2},
 {"Name": "Edgebrook",		"Line": "Green", 	"Block": 9},
 {"Name": "Whited",			"Line": "Green", 	"Block": 22},
@@ -26,5 +27,7 @@
 {"Name": "First Ave",				"Line": "Red", 		"Block": 45},
 {"Name": "Station Square",			"Line": "Red", 		"Block": 48},
 {"Name": "South Hills Junction",	"Line": "Red", 		"Block": 60},
-{"Name": "Train Yard",				"Line": "Red", 		"Block": 0}
-]
+{"Name": "Train Yard",				"Line": "Red", 		"Block": 0}],
+"redMax": 78,
+"greenMax": 153
+}
