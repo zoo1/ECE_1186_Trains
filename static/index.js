@@ -579,9 +579,12 @@ function replaceAll(str, search, replacement) {
 }
 
 function sendTimeModifierToAllModules(modifier) {
+<<<<<<< HEAD
 	if (modifier == 0) {
 		modifier = 0.0001;
 	}
+=======
+>>>>>>> origin/CTCServer
 	var str = "CTC : 0 : set, TimeModifier = " + modifier
 	$.ajax({
 		url: "/handlers/send_all" + "?msg=" + str.replace("=", "/equals/"),
