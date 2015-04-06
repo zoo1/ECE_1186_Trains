@@ -143,7 +143,7 @@
 						</tr>
 						<tr>
 							<td>Length</td>
-							<td><span data-bind="text: Block_Length"></span></td>
+							<td><span data-bind="text: Block_Length * 3.28084"></span></td>
 						</tr>
 						<tr>
 							<td>Grade</td>
@@ -183,8 +183,16 @@
 							</td>
 						</tr>
 						<tr>
+							<td>Lights</td>
+							<td><span data-bind="text: Lights"></span></td>
+						</tr>
+						<tr>
 							<td>Weather</td>
 							<td><span data-bind="text: Weather"></span></td>
+						</tr>
+						<tr>
+							<td>Heater</td>
+							<td><span data-bind="text: Heater"></span></td>
 						</tr>
 						<tr>
 							<td>Track Status</td>
@@ -221,7 +229,7 @@
 							<td data-bind="text: Name"></td>
 							<td data-bind="text: Line"></td>
 							<td data-bind="text: Block_Numbers[0] + ', ' + Block_Numbers[1] + ', ' + Block_Numbers[2]"></td>
-							<td data-bind="text: Block_Numbers[Connection] + ' to ' + Block_Numbers[Connection + 1]"></td>
+							<td data-bind="text: Connection[0] + ' to ' + Connection[1]"></td>
 						</tr>
 					</tbody>
 				</table>
@@ -257,6 +265,7 @@
 						<thead>
 							<tr>
 								<th>Name</th>
+								<th>ID</th>
 								<th>Line</th>
 								<th>Location Block</th>
 								<th>Suggested Speed</th>
@@ -267,10 +276,11 @@
 						<tbody id="train-list-body" data-bind="foreach: trainsList">
 							<tr class="train-data-row unselectable" data-bind="click: $parent.selectTrain, attr: {'dataindex': ID}">
 								<td data-bind="text: Name"></td>
+								<td data-bind="text: ID"></td>
 								<td data-bind="text: Line"></td>
 								<td data-bind="text: Block"></td>
-								<td data-bind="text: Suggested_Speed"></td>
-								<td data-bind="text: Authority"></td>
+								<td data-bind="text: Suggested_Speed() + ' MPH'"></td>
+								<td data-bind="text: Authority() + ' Blocks'"></td>
 								<td data-bind="text: NextDestination"></td>
 							</tr>
 						</tbody>
@@ -287,10 +297,6 @@
 						<span class="input-group-addon">Train Name</span>
 						<input type="text" class="form-control" data-bind="value: Name">
 					</div>
-					<div class="input-group" data-toggle="tooltip" data-placement="left" title="Note: Changing this block will not affect the schedule.  The train will go to the specified destination block and then resume its scheduled route.">
-						<span class="input-group-addon" >Next Destination Block</span>
-						<input id="user-destination" type="text" class="form-control" data-bind="value: Suggested_Speed">
-					</div>
 					<div class="input-group">
 						<span class="input-group-addon">Suggested Speed</span>
 						<input type="number" class="form-control" data-bind="value: Suggested_Speed">
@@ -298,6 +304,10 @@
 					<div class="input-group">
 						<span class="input-group-addon">Authority</span>
 						<input type="number" class="form-control" data-bind="value: Authority">
+					</div>
+					<div class="input-group">
+						<span class="input-group-addon">Schedule Start Time</span>
+						<input id="schedule-start-time" type="text" class="form-control" data-time-format="H:i" data-bind="value: startTime">
 					</div>
 					<h2 class="heading">Schedule a Stop</h2>
 					<div class="input-group">
@@ -317,7 +327,14 @@
 						<span class="input-group-addon">Dwell (Seconds)</span>
 						<input id="dwell-time" type="number" class="form-control">
 					</div>
-					<button type="button" class="btn btn-default" onclick="addStop()">Add Stop</button>
+					<div class="btn-group" style="position: relative; width: 100%">
+						<button type="button" style="width: 30%"class="btn btn-default" onclick="addStop()">Add Stop</button>
+						<button type="button" style="width: 70%"class="btn btn-default" data-bind="click: trainsDataModel.currentTrainObject().activate, disable: !$parent.executing()"
+							title="Button: immediately sends schedule for execution, ignoring start time.">
+							Dispatch Now With Schedule
+						</button>
+					</div>
+					
 					<div class="flex col grow">
 						<table class="table">
 							<thead>
