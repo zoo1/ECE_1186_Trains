@@ -15,13 +15,15 @@ import com.sun.net.httpserver.HttpServer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JScrollPane;
-import org.apache.poi.hssf.util.CellReference;
+import javax.swing.table.DefaultTableModel;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -43,7 +45,8 @@ public class TrackModelGUI extends javax.swing.JFrame {
     /**
      * Creates new form TrackModelGUI
      */
-    public TrackModelGUI() {
+    public TrackModelGUI() 
+    {
         initComponents();
     }
 
@@ -57,7 +60,6 @@ public class TrackModelGUI extends javax.swing.JFrame {
     private void initComponents() {
 
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jButton4 = new javax.swing.JButton();
@@ -71,14 +73,6 @@ public class TrackModelGUI extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Change Block Size...");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-
-        jTable1.setAutoCreateColumnsFromModel(false);
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -110,9 +104,7 @@ public class TrackModelGUI extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(27, 27, 27)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -121,7 +113,6 @@ public class TrackModelGUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 375, Short.MAX_VALUE)
@@ -130,10 +121,6 @@ public class TrackModelGUI extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>                        
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {                                         
-        // TODO add your handling code here:
-    }                                        
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {                                         
         // TODO add your handling code here:
@@ -150,12 +137,11 @@ public class TrackModelGUI extends javax.swing.JFrame {
         //{
         //    filename = null;
         //}
-        String filename = "C:\\Users\\admin\\Dropbox\\Software Engineering\\RealTrackModel.xlsx";
-        //String filename = "C:\\Users\\admin\\Dropbox\\Software Engineering\\RealTrackModel.xlsx";
+        String filename = "C:\\Users\\Trevor\\Dropbox\\Software Engineering\\RealTrackModel.xlsx";
         java.util.List sheetData = new ArrayList();
         FileInputStream fis = null;
-        Object[][] data = new Object[231][13];
-        Object[] colNames = new Object[13];
+        Vector colNames = new Vector();
+        Vector data = new Vector();
         
         try {
             //
@@ -172,49 +158,46 @@ public class TrackModelGUI extends javax.swing.JFrame {
             //
             XSSFSheet sheet = workbook.getSheetAt(0);
             int r = -1;
-            int c = 0;
-            for (Row row : sheet) {
+            int c;
+            for (Row row : sheet) 
+            {
                 r++;
-                c = 0;
-                for (Cell cell : row) {
-                    CellReference cellRef = new CellReference(row.getRowNum(), cell.getColumnIndex());
-
+                c=0;
+                Vector d = new Vector();
+                for (Cell cell : row) 
+                {
                     switch (cell.getCellType()) {
                         case XSSFCell.CELL_TYPE_STRING:
                             if (r < 1)
                             {
-                                colNames[c] = cell.getRichStringCellValue().getString();
+                                colNames.add(cell.getRichStringCellValue().getString());
                             }
                             else
                             {
-                                data[r-1][c] = cell.getRichStringCellValue().getString();
+                                d.add(cell.getRichStringCellValue().getString());
                             }
                             break;
                         case XSSFCell.CELL_TYPE_NUMERIC:
-                            if (DateUtil.isCellDateFormatted(cell)) {
-                                data[r-1][c] = cell.getDateCellValue();
-                            } else {
-                                data[r-1][c] = cell.getNumericCellValue();
-                            }
+                            d.add(cell.getNumericCellValue());
                             break;
                         case XSSFCell.CELL_TYPE_BOOLEAN:
-                            data[r-1][c] = cell.getBooleanCellValue();
+                            d.add(cell.getBooleanCellValue());
                             break;
                         case XSSFCell.CELL_TYPE_FORMULA:
-                            data[r-1][c] = cell.getCellFormula();
+                            d.add(cell.getCellFormula());
                             break;
                         case XSSFCell.CELL_TYPE_BLANK:
                             if (c <= 13)
                             {
-                                data[r-1][c] = cell.getNumericCellValue();
+                                d.add(cell.getNumericCellValue());
                             }
                             break;
                         default:
-                    }
-                    c++;
                 }
+                    c++;
             }
-            
+                data.add(d);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -226,11 +209,27 @@ public class TrackModelGUI extends javax.swing.JFrame {
                 }
             }
         }
+        DefaultTableModel model = new DefaultTableModel(data, colNames);
+        jTable1.setModel(model);
         
     }                                        
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {                                         
-        // TODO add your handling code here:
+
+        //The following is pseudocode
+        //JSONObject jsonobject = new JSONObject();
+        //JSONArray jsonarray = new JSONArray();
+        
+        //int nRow = jTable1.getRowCount(), nCol = jTable1.getColumnCount();
+        //Object[][] tableData = new Object[nRow][nCol];
+        //for (int i = 0 ; i < nRow ; i++)
+        //{
+            //for (int j = 0 ; j < nCol ; j++)
+            //{
+                //jsonobject = jsonobject + (colNames + ": " + data[i][j]);
+            //}
+            //jsonarray += jsonobject;
+        //}
     }                                        
 
     /**
@@ -275,7 +274,6 @@ public class TrackModelGUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify                     
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton4;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
