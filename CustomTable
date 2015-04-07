@@ -1,0 +1,49 @@
+package trackmodel;
+
+import javax.swing.table.AbstractTableModel;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+public class CustomTable extends AbstractTableModel 
+{
+    String[] colName = {"Line", "Section", "Block_Number", "Block_Length", "Grade_Percent", "Speed_Limit", "Infrastructure", "Elevation", "Cumulative_Elevation", "Switch_Block", "Arrow_Direction", "Accessible_Blocks/0", "Accessible_Blocks/1"};
+    ArrayList<Object[]> rows = new ArrayList<Object[]>();
+    public String getColumnName(int col)
+    {
+        return colName[col];
+    }
+
+    public int getColumnCount()
+    {
+        return colName.length;
+    }
+
+    public int getRowCount()
+    {
+        return rows.size();
+    }
+
+    public Object getValueAt(int row, int col)
+    {
+        System.out.println("getValueAt method was called."); //To verify the method was called
+        Object[] s = rows.get(row);
+        return s[col];
+    }
+
+    public boolean isCellEditable(int col, int row)
+    {
+        return true;
+    }
+
+    public void setValueAt(Object s, int row, int col)
+    {
+        System.out.println("setValueAt method was called"); //To verify the method was called
+        rows.get(row)[col] = s;
+        fireTableDataChanged();
+    }
+
+    public void test()
+    {
+        System.out.println("Test");
+    }
+}
