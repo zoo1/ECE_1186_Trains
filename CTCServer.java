@@ -117,7 +117,7 @@ public class CTCServer {
 		public void run() {
 			while (true) {
 				try (
-					ServerSocket serverSocket =	new ServerSocket(socketListenerNumber, 0, InetAddress.getByName(null));
+					ServerSocket serverSocket =	new ServerSocket(socketListenerNumber); // , 0, InetAddress.getByName(null));
 					Socket clientSocket = serverSocket.accept();     
 					BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 					PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
