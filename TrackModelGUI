@@ -1,9 +1,45 @@
+import java.awt.*;
+import java.io.*;
+import java.net.*;
+import java.util.*;
+import jxl.*;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.event.TableModelListener;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.table.TableModel;
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
+import com.sun.net.httpserver.HttpServer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JScrollPane;
+import org.apache.poi.hssf.util.CellReference;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.DateUtil;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
 /**
  *
  * @author admin
  */
 public class TrackModelGUI extends javax.swing.JFrame {
-
+    
+    public static int webSocketNumber = 8004;
+    public static int socketListenerNumber = 8005;
+    private static String staticDir = "/static";
+    private static String handlerDir = "/handlers";
+    private static ArrayList<String> messageList = new ArrayList<String>();
     /**
      * Creates new form TrackModelGUI
      */
@@ -24,6 +60,7 @@ public class TrackModelGUI extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -41,6 +78,7 @@ public class TrackModelGUI extends javax.swing.JFrame {
             }
         });
 
+        jTable1.setAutoCreateColumnsFromModel(false);
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -54,6 +92,13 @@ public class TrackModelGUI extends javax.swing.JFrame {
         ));
         jScrollPane2.setViewportView(jTable1);
 
+        jButton4.setText("Export Track Map...");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -65,6 +110,8 @@ public class TrackModelGUI extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(27, 27, 27)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
@@ -74,7 +121,8 @@ public class TrackModelGUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 375, Short.MAX_VALUE)
                 .addContainerGap())
@@ -89,12 +137,110 @@ public class TrackModelGUI extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {                                         
         // TODO add your handling code here:
+        //Create a file chooser
+        //JFileChooser fc = new JFileChooser();
+        //In response to a button click:
+        //int returnVal = fc.showOpenDialog(TrackModelGUI.this);
+        //File filename;
+        //if (returnVal == JFileChooser.APPROVE_OPTION)
+        //{
+        //    filename = fc.getSelectedFile();
+        //}
+        //else
+        //{
+        //    filename = null;
+        //}
+        String filename = "C:\\Users\\admin\\Dropbox\\Software Engineering\\RealTrackModel.xlsx";
+        //String filename = "C:\\Users\\admin\\Dropbox\\Software Engineering\\RealTrackModel.xlsx";
+        java.util.List sheetData = new ArrayList();
+        FileInputStream fis = null;
+        Object[][] data = new Object[231][13];
+        Object[] colNames = new Object[13];
+        
+        try {
+            //
+            // Create a FileInputStream that will be use to read the excel file.
+            //
+            fis = new FileInputStream(filename);
+
+            //
+            // Create an excel workbook from the file system.
+            //
+            XSSFWorkbook workbook = new XSSFWorkbook(fis);
+            //
+            // Get the first sheet on the workbook.
+            //
+            XSSFSheet sheet = workbook.getSheetAt(0);
+            int r = -1;
+            int c = 0;
+            for (Row row : sheet) {
+                r++;
+                c = 0;
+                for (Cell cell : row) {
+                    CellReference cellRef = new CellReference(row.getRowNum(), cell.getColumnIndex());
+
+                    switch (cell.getCellType()) {
+                        case XSSFCell.CELL_TYPE_STRING:
+                            if (r < 1)
+                            {
+                                colNames[c] = cell.getRichStringCellValue().getString();
+                            }
+                            else
+                            {
+                                data[r-1][c] = cell.getRichStringCellValue().getString();
+                            }
+                            break;
+                        case XSSFCell.CELL_TYPE_NUMERIC:
+                            if (DateUtil.isCellDateFormatted(cell)) {
+                                data[r-1][c] = cell.getDateCellValue();
+                            } else {
+                                data[r-1][c] = cell.getNumericCellValue();
+                            }
+                            break;
+                        case XSSFCell.CELL_TYPE_BOOLEAN:
+                            data[r-1][c] = cell.getBooleanCellValue();
+                            break;
+                        case XSSFCell.CELL_TYPE_FORMULA:
+                            data[r-1][c] = cell.getCellFormula();
+                            break;
+                        case XSSFCell.CELL_TYPE_BLANK:
+                            if (c <= 13)
+                            {
+                                data[r-1][c] = cell.getNumericCellValue();
+                            }
+                            break;
+                        default:
+                    }
+                    c++;
+                }
+            }
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (fis != null) {
+                try {
+                    fis.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(TrackModelGUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        
+    }                                        
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {                                         
+        // TODO add your handling code here:
     }                                        
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    
+    
+    
+    
+    public static void main(String args[]) throws IOException {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -119,6 +265,7 @@ public class TrackModelGUI extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
+        
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new TrackModelGUI().setVisible(true);
@@ -129,6 +276,7 @@ public class TrackModelGUI extends javax.swing.JFrame {
     // Variables declaration - do not modify                     
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton4;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
     // End of variables declaration                   
