@@ -137,7 +137,7 @@ public class TrackModelGUI extends javax.swing.JFrame {
         //{
         //    filename = null;
         //}
-        String filename = "C:\\Users\\Trevor\\Dropbox\\Software Engineering\\RealTrackModel.xlsx";
+        String filename = "C:\\Users\\admin\\Dropbox\\Software Engineering\\RealTrackModel.xlsx";
         java.util.List sheetData = new ArrayList();
         FileInputStream fis = null;
         Vector colNames = new Vector();
@@ -226,10 +226,70 @@ public class TrackModelGUI extends javax.swing.JFrame {
         //{
             //for (int j = 0 ; j < nCol ; j++)
             //{
-                //jsonobject = jsonobject + (colNames + ": " + data[i][j]);
+                //jsonobject = jsonobject + ("\"" + colNames + "\": \"" + data[i][j] + "\",");
             //}
             //jsonarray += jsonobject;
         //}
+        
+        
+        DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
+        int nRow = dtm.getRowCount(), nCol = dtm.getColumnCount();
+        Object[][] tableData = new Object[nRow][nCol];
+        String[] colNames = new String[13];
+        for (int i = 1 ; i < nRow ; i++)
+        {
+            for (int j = 0 ; j < nCol ; j++)
+            {
+                tableData[i][j] = dtm.getValueAt(i,j);
+                System.out.println(tableData[i][j]);
+                if (i+1 == nRow)
+                {
+                    colNames[j] = dtm.getColumnName(j);
+                }
+            }
+            
+        }
+        PrintWriter writer = null;
+        try {
+            writer = new PrintWriter("Track Info.json", "UTF-8");
+            writer.print("[{");
+            for (int i = 1 ; i < nRow ; i++)
+            {
+                for (int j = 0 ; j < nCol ; j++)
+                {
+                    if (j >= 12)
+                    {
+                        if (j == 12)
+                        {
+                            writer.print("\"Accessible_Blocks\":[" + tableData[i][j]);
+                        }
+                        else
+                        {
+                            writer.print(", " + tableData[i][j] + "]}");
+                        }
+                    }
+                    else
+                    {
+                        writer.print("\"" + colNames[j] + "\":\"");
+                        if (tableData[i][j].equals("N/A"))
+                            writer.print("\",");
+                        else
+                            writer.print(tableData[i][j] + "\",");
+                    }
+                }
+                if (i+1 != nRow)
+                {
+                    writer.print(",");
+                    writer.println("{");
+                }
+            }
+            writer.println("]");
+            writer.close();
+            }catch (IOException ex) {
+            // report
+            } finally {
+            try {writer.close();} catch (Exception ex) {}
+            }
     }                                        
 
     /**
@@ -245,6 +305,8 @@ public class TrackModelGUI extends javax.swing.JFrame {
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
+        SocketListener listener = new SocketListener();
+		listener.start();
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -279,3 +341,4 @@ public class TrackModelGUI extends javax.swing.JFrame {
     private javax.swing.JTable jTable1;
     // End of variables declaration                   
 }
+
