@@ -1,154 +1,232 @@
-Line	Section	Block Number	Block Length (m)	Block Grade (%)	Speed Limit (Km/Hr)	Infrastructure	ELEVATION (M)	CUMALTIVE ELEVATION (M)	Switch Block	Arrow Direction	
-Red	A	1	50	0.5	40		0.50	0.50	Switch 6	Head	
-Red	A	2	50	1	40		1.00	1.50			
-Red	A	3	50	1.5	40		1.50	3.00		Head	
-Red	B	4	50	2	40		2.00	5.00		Head	
-Red	B	5	50	1.5	40		2.50	7.50			
-Red	B	6	50	1	40		3.00	10.50		Head	
-Red	C	7	75	0.5	40	STATION: SHADYSIDE	5.25	15.75		Head	
-Red	C	8	75	0	40		6.00	21.75			
-Red	C	9	75	0	40	SWITCH TO/FROM YARD	6.75	28.50	Switch 12	Head	
-Red	D	10	75	0	40		7.50	36.00	Switch 12	Head	
-Red	D	11	75	-0.5	40		8.25	44.25			
-Red	D	12	75	-0.5	40		9.00	53.25		Head	
-Red	E	13	68.4	-1	40		8.89	62.14		Head	
-Red	E	14	60	-1	40		8.40	70.54			
-Red	E	15	60	-1	40	SWITCH	9.00	79.54	Switch 6	Head	
-Red	F	16	50	-0.5	40	STATION: HERRON AVE	8.00	87.54	Switch 6	Head	
-Red	F	17	200	-0.5	55		34.00	121.54			
-Red	F	18	400	-0.06025	70		72.00	193.54			
-Red	F	19	400	0	70		76.00	269.54			
-Red	F	20	200	0	70		40.00	309.54		Head	
-Red	G	21	100	0	55	STATION; SWISSVILLE	21.00	330.54		Head	
-Red	G	22	100	0	55		22.00	352.54			
-Red	G	23	100	0	55		23.00	375.54		Head	
-Red	H	24	50	0	70	UNDERGROUND	12.00	387.54		Head	
-Red	H	25	50	0	70	STATION;    PENN STATION; UNDERGROUND	12.50	400.04			
-Red	H	26	50	0	70	UNDERGROUND	13.00	413.04			
-Red	H	27	50	0	70	SWITCH; UNDERGROUND	13.50	426.54	Switch 7		
-Red	H	28	50	0	70	UNDERGROUND	14.00	440.54	Switch 7		
-Red	H	29	60	0	70	UNDERGROUND	17.40	457.94			
-Red	H	30	60	0	70	UNDERGROUND	18.00	475.94			
-Red	H	31	50	0	70	UNDERGROUND	15.50	491.44			
-Red	H	32	50	0	70	SWITCH; UNDERGROUND	16.00	507.44	Switch 8		
-Red	H	33	50	0	70	UNDERGROUND	16.50	523.94	Switch 8		
-Red	H	34	50	0	70	UNDERGROUND	17.00	540.94			
-Red	H	35	50	0	70	STATION;     STEEL PLAZA; UNDERGROUND	17.50	558.44			
-Red	H	36	50	0	70	UNDERGROUND	18.00	576.44			
-Red	H	37	50	0	70	UNDERGROUND	18.50	594.94			
-Red	H	38	50	0	70	SWITCH; UNDERGROUND	19.00	613.94	Switch 9		
-Red	H	39	50	0	70	UNDERGROUND	19.50	633.44	Switch 9		
-Red	H	40	60	0	70	UNDERGROUND	24.00	657.44			
-Red	H	41	60	0	70	UNDERGROUND	24.60	682.04			
-Red	H	42	50	0	70	UNDERGROUND	21.00	703.04			
-Red	H	43	50	0	70	SWITCH; UNDERGROUND	21.50	724.54	Switch 10		
-Red	H	44	50	0	70	UNDERGROUND	22.00	746.54	Switch 10		
-Red	H	45	50	0	70	STATION;     FIRST AVE; UNDERGROUND	22.50	769.04		Head	
-Red	I	46	75	0	70	UNDERGROUND	34.50	803.54		Head	
-Red	I	47	75	0	70	RAILWAY CROSSING	35.25	838.79			
-Red	I	48	75	0	70	STATION; STATION SQUARE	36.00	874.79		Head	
-Red	J	49	50	0	60		24.50	899.29		Head	
-Red	J	50	50	0	60		25.00	924.29			
-Red	J	51	50	0	55		25.50	949.79			
-Red	J	52	43.2	0	55	SWITCH	22.46	972.26	Switch 11		
-Red	J	53	50	0	55		26.50	998.76	Switch 11		
-Red	J	54	50	0	55		27.00	1025.76		Head	
-Red	K	55	75	0.5	55		41.25	1067.01		Head	
-Red	K	56	75	0.5	55		42.00	1109.01			
-Red	K	57	75	0.5	55		42.75	1151.76		Head	
-Red	L	58	75	1	55		43.50	1195.26		Head	
-Red	L	59	75	0.5	55		44.25	1239.51			
-Red	L	60	75	0	55	STATION; SOUTH HILLS JUNCTION	45.00	1284.51		Head	
-Red	M	61	75	-0.5	55		45.75	1330.26		Head	
-Red	M	62	75	-1	55		46.50	1376.76			
-Red	M	63	75	-1	55		47.25	1424.01		Head	
-Red	N	64	75	-0.5	55		48.00	1472.01		Head	
-Red	N	65	75	0	55		48.75	1520.76			
-Red	N	66	75	0	55		49.50	1570.26	Switch 11	Head	
-Red	O	67	50	0	55	UNDERGROUND	33.50	1603.76	Switch 10	Head/Head	
-Red	P	68	50	0	55	UNDERGROUND	34.00	1637.76		Head	
-Red	P	69	50	0	55	UNDERGROUND	34.50	1672.26			
-Red	P	70	50	0	55	UNDERGROUND	35.00	1707.26		Head	
-Red	Q	71	50	0	55	UNDERGROUND	35.50	1742.76	Switch 9	Head/Head	
-Red	R	72	50	0	55	UNDERGROUND	36.00	1778.76	Switch 8	Head/Head	
-Red	S	73	50	0	55	UNDERGROUND	36.50	1815.26		Head	
-Red	S	74	50	0	55	UNDERGROUND	37.00	1852.26			
-Red	S	75	50	0	55	UNDERGROUND	37.50	1889.76		Head	
-Red	T	76	50	0	55	UNDERGROUND	38.00	1927.76	Switch 7	Head/Head	
-Red	U	77	50	0	35		38.50	1966.26	Switch 12	Head/Head	
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
-											
+Line	Section	Block_Number	Block_Length	Grade_Percent	Speed_Limit	Infrastructure	Elevation	Cumulative_Elevation	Switch_Block	Arrow_Direction	Accessible_Blocks/0	Accessible_Blocks/1
+Green	A	0	100	0	55	YARD	0.5	0.5	N/A	N/A	1	N/A
+Green	A	1	100	0.5	55	N/A	0.5	0.5	Switch 1	Head	2	N/A
+Green	A	2	100	1	55	STATION; PIONEER	1	1.5	N/A	N/A	3	N/A
+Green	A	3	100	1.5	55	N/A	1.5	3	N/A	Tail	4	N/A
+Green	B	4	100	2	55	N/A	2	5	N/A	Head	8	N/A
+Green	B	5	100	3	55	N/A	3	8	N/A	N/A	1	2
+Green	B	6	100	4	55	N/A	4	12	N/A	Tail	1	2
+Green	C	7	100	5	55	N/A	5	17	N/A	Head	1	2
+Green	C	8	100	0	55	N/A	0	17	N/A	N/A	1	2
+Green	C	9	100	-5	55	STATION; EDGEBROOK	-5	12	N/A	N/A	1	2
+Green	C	10	100	-5	55	N/A	-5	7	N/A	N/A	1	2
+Green	C	11	100	-4	55	N/A	-4	3	N/A	N/A	1	2
+Green	C	12	100	-3	55	SWITCH	-3	0	Switch 1	Tail	1	2
+Green	D	13	150	0	70	N/A	0	0	Switch 1	Head	1	2
+Green	D	14	150	0	70	N/A	0	0	N/A	N/A	1	2
+Green	D	15	150	0	70	N/A	0	0	N/A	N/A	1	2
+Green	D	16	150	0	70	STATION	0	0	N/A	Head	1	2
+Green	E	17	150	0	60	N/A	0	0	N/A	Head	1	2
+Green	E	18	150	0	60	N/A	0	0	N/A	N/A	1	2
+Green	E	19	150	0	60	RAILWAY CROSSING	0	0	N/A	N/A	1	2
+Green	E	20	150	0	60	N/A	0	0	N/A	Head	1	2
+Green	F	21	300	0	70	N/A	0	0	N/A	Head	1	2
+Green	F	22	300	0	70	STATION; WHITED	0	0	N/A	N/A	1	2
+Green	F	23	300	0	70	N/A	0	0	N/A	N/A	1	2
+Green	F	24	300	0	70	N/A	0	0	N/A	N/A	1	2
+Green	F	25	200	0	70	N/A	0	0	N/A	N/A	1	2
+Green	F	26	100	0	70	N/A	0	0	N/A	N/A	1	2
+Green	F	27	50	0	70	N/A	0	0	N/A	N/A	1	2
+Green	F	28	50	0	70	N/A	0	0	Switch 2	Head	1	2
+Green	G	29	50	0	70	SWITCH	0	0	Switch 2	Tail	1	2
+Green	G	30	50	0	70	N/A	0	0	N/A	N/A	1	2
+Green	G	31	50	0	70	STATION; SOUTH BANK	0	0	N/A	N/A	1	2
+Green	G	32	50	0	70	N/A	0	0	N/A	Head	1	2
+Green	H	33	50	0	70	N/A	0	0	N/A	Tail	1	2
+Green	H	34	50	0	70	N/A	0	0	N/A	N/A	1	2
+Green	H	35	50	0	70	N/A	0	0	N/A	Head	1	2
+Green	I	36	50	0	70	UNDERGROUND	0	0	N/A	Tail	1	2
+Green	I	37	50	0	70	UNDERGROUND	0	0	N/A	N/A	1	2
+Green	I	38	50	0	70	UNDERGROUND	0	0	N/A	N/A	1	2
+Green	I	39	50	0	70	STATION; CENTRAL; UNDERGROUND	0	0	N/A	N/A	1	2
+Green	I	40	50	0	70	UNDERGROUND	0	0	N/A	N/A	1	2
+Green	I	41	50	0	70	UNDERGROUND	0	0	N/A	N/A	1	2
+Green	I	42	50	0	70	UNDERGROUND	0	0	N/A	N/A	1	2
+Green	I	43	50	0	70	UNDERGROUND	0	0	N/A	N/A	1	2
+Green	I	44	50	0	70	UNDERGROUND	0	0	N/A	N/A	1	2
+Green	I	45	50	0	70	UNDERGROUND	0	0	N/A	N/A	1	2
+Green	I	46	50	0	70	UNDERGROUND	0	0	N/A	N/A	1	2
+Green	I	47	50	0	70	UNDERGROUND	0	0	N/A	N/A	1	2
+Green	I	48	50	0	70	STATION; INGLEWOOD; UNDERGROUND	0	0	N/A	N/A	1	2
+Green	I	49	50	0	70	UNDERGROUND	0	0	N/A	N/A	1	2
+Green	I	50	50	0	70	UNDERGROUND	0	0	N/A	N/A	1	2
+Green	I	51	50	0	70	UNDERGROUND	0	0	N/A	N/A	1	2
+Green	I	52	50	0	70	UNDERGROUND	0	0	N/A	N/A	1	2
+Green	I	53	50	0	70	UNDERGROUND	0	0	N/A	N/A	1	2
+Green	I	54	50	0	70	UNDERGROUND	0	0	N/A	N/A	1	2
+Green	I	55	50	0	70	UNDERGROUND	0	0	N/A	N/A	1	2
+Green	I	56	50	0	70	UNDERGROUND	0	0	N/A	N/A	1	2
+Green	I	57	50	0	70	STATION; OVERBROOK; UNDERGROUND	0	0	Switch 3	Head	1	2
+Green	J	58	50	0	60	SWITCH TO YARD	0	0	Switch 3	Tail	1	2
+Green	J	59	50	0	60	N/A	0	0	N/A	N/A	1	2
+Green	J	60	50	0	60	N/A	0	0	N/A	N/A	1	2
+Green	J	61	50	0	60	N/A	0	0	Switch 0	N/A	1	2
+Green	J	62	50	0	60	SWITCH FROM YARD	0	0	Switch 0	Head	1	2
+Green	K	63	100	0	70	N/A	0	0	N/A	Tail	1	2
+Green	K	64	100	0	70	N/A	0	0	N/A	N/A	1	2
+Green	K	65	200	0	70	STATION; GLENBURY	0	0	N/A	N/A	1	2
+Green	K	66	200	0	70	N/A	0	0	N/A	N/A	1	2
+Green	K	67	100	0	70	N/A	0	0	N/A	N/A	1	2
+Green	K	68	100	0	70	N/A	0	0	N/A	Head	1	2
+Green	L	69	100	0	60	N/A	0	0	N/A	Tail	1	2
+Green	L	70	100	0	60	N/A	0	0	N/A	N/A	1	2
+Green	L	71	100	0	60	N/A	0	0	N/A	N/A	1	2
+Green	L	72	100	0	60	N/A	0	0	N/A	N/A	1	2
+Green	L	73	100	0	60	STATION; DORMONT	0	0	N/A	Head	1	2
+Green	M	74	100	0	60	N/A	0	0	N/A	Tail	1	2
+Green	M	75	100	0	60	N/A	0	0	N/A	N/A	1	2
+Green	M	76	100	0	60	SWITCH	0	0	Switch 4	Head	1	2
+Green	N	77	300	0	70	STATION; MT LEBANON	0	0	Switch 4	Head	1	2
+Green	N	78	300	0	70	N/A	0	0	N/A	N/A	1	2
+Green	N	79	300	0	70	N/A	0	0	N/A	N/A	1	2
+Green	N	80	300	0	70	N/A	0	0	N/A	N/A	1	2
+Green	N	81	300	0	70	N/A	0	0	N/A	N/A	1	2
+Green	N	82	300	0	70	N/A	0	0	N/A	N/A	1	2
+Green	N	83	300	0	70	N/A	0	0	N/A	N/A	1	2
+Green	N	84	300	0	70	N/A	0	0	N/A	N/A	1	2
+Green	N	85	300	0	70	N/A	0	0	Switch 5	Head	1	2
+Green	O	86	100	0	55	SWITCH	0	0	Switch 5	Tail	1	2
+Green	O	87	86.6	0	55	N/A	0	0	N/A	N/A	1	2
+Green	O	88	100	0	55	STATION; POPLAR	0	0	N/A	Head	1	2
+Green	P	89	75	-0.5	55	N/A	-0.375	-0.375	N/A	Tail	1	2
+Green	P	90	75	-1	55	N/A	-0.75	-1.125	N/A	N/A	1	2
+Green	P	91	75	-2	55	N/A	-1.5	-2.625	N/A	N/A	1	2
+Green	P	92	75	0	55	N/A	0	-2.625	N/A	N/A	1	2
+Green	P	93	75	2	55	N/A	1.5	-1.125	N/A	N/A	1	2
+Green	P	94	75	1	55	N/A	0.75	-0.375	N/A	N/A	1	2
+Green	P	95	75	0.5	55	N/A	0.375	0	N/A	N/A	1	2
+Green	P	96	75	0	55	STATION; CASTLE SHANNON	0	0	N/A	N/A	1	2
+Green	P	97	75	0	55	N/A	0	0	N/A	Head	1	2
+Green	Q	98	75	0	55	N/A	0	0	N/A	Tail	1	2
+Green	Q	99	75	0	55	N/A	0	0	N/A	N/A	1	2
+Green	Q	100	75	0	55	N/A	0	0	Switch 5	Head	1	2
+Green	R	101	35	0	55	N/A	0	0	Switch 4	Tail/Head	1	2
+Green	S	102	100	0	60	N/A	0	0	N/A	Tail	1	2
+Green	S	103	100	0	60	N/A	0	0	N/A	N/A	1	2
+Green	S	104	80	0	60	N/A	0	0	N/A	Head	1	2
+Green	T	105	100	0	60	STATION; DORMONT	0	0	N/A	Tail	1	2
+Green	T	106	100	0	60	N/A	0	0	N/A	N/A	1	2
+Green	T	107	90	0	60	N/A	0	0	N/A	N/A	1	2
+Green	T	108	100	0	60	N/A	0	0	N/A	N/A	1	2
+Green	T	109	100	0	60	N/A	0	0	N/A	Head	1	2
+Green	U	110	100	0	70	N/A	0	0	N/A	Tail	1	2
+Green	U	111	100	0	70	N/A	0	0	N/A	N/A	1	2
+Green	U	112	100	0	70	N/A	0	0	N/A	N/A	1	2
+Green	U	113	100	0	70	N/A	0	0	N/A	N/A	1	2
+Green	U	114	100	0	70	STATION; GLENBURY	0	0	N/A	N/A	1	2
+Green	U	115	100	0	70	N/A	0	0	N/A	N/A	1	2
+Green	U	116	100	0	70	N/A	0	0	N/A	Head	1	2
+Green	V	117	50	0	60	N/A	0	0	N/A	Tail	1	2
+Green	V	118	50	0	60	N/A	0	0	N/A	N/A	1	2
+Green	V	119	40	0	60	N/A	0	0	N/A	N/A	1	2
+Green	V	120	50	0	60	N/A	0	0	N/A	N/A	1	2
+Green	V	121	50	0	60	N/A	0	0	N/A	Head	1	2
+Green	W	122	50	0	70	UNDERGROUND	0	0	N/A	Tail	1	2
+Green	W	123	50	0	70	STATION; OVERBROOK; UNDERGROUND	0	0	N/A	N/A	1	2
+Green	W	124	50	0	70	UNDERGROUND	0	0	N/A	N/A	1	2
+Green	W	125	50	0	70	UNDERGROUND	0	0	N/A	N/A	1	2
+Green	W	126	50	0	70	UNDERGROUND	0	0	N/A	N/A	1	2
+Green	W	127	50	0	70	UNDERGROUND	0	0	N/A	N/A	1	2
+Green	W	128	50	0	70	UNDERGROUND	0	0	N/A	N/A	1	2
+Green	W	129	50	0	70	UNDERGROUND	0	0	N/A	N/A	1	2
+Green	W	130	50	0	70	UNDERGROUND	0	0	N/A	N/A	1	2
+Green	W	131	50	0	70	UNDERGROUND	0	0	N/A	N/A	1	2
+Green	W	132	50	0	70	STATION; INGLEWOOD; UNDERGROUND	0	0	N/A	N/A	1	2
+Green	W	133	50	0	70	UNDERGROUND	0	0	N/A	N/A	1	2
+Green	W	134	50	0	70	UNDERGROUND	0	0	N/A	N/A	1	2
+Green	W	135	50	0	70	UNDERGROUND	0	0	N/A	N/A	1	2
+Green	W	136	50	0	70	UNDERGROUND	0	0	N/A	N/A	1	2
+Green	W	137	50	0	70	UNDERGROUND	0	0	N/A	N/A	1	2
+Green	W	138	50	0	70	UNDERGROUND	0	0	N/A	N/A	1	2
+Green	W	139	50	0	70	UNDERGROUND	0	0	N/A	N/A	1	2
+Green	W	140	50	0	70	UNDERGROUND	0	0	N/A	N/A	1	2
+Green	W	141	50	0	70	STATION; CENTRAL; UNDERGROUND	0	0	N/A	N/A	1	2
+Green	W	142	50	0	70	UNDERGROUND	0	0	N/A	N/A	1	2
+Green	W	143	50	0	70	UNDERGROUND	0	0	N/A	Head	1	2
+Green	X	144	50	0	70	N/A	0	0	N/A	Tail	1	2
+Green	X	145	50	0	70	N/A	0	0	N/A	N/A	1	2
+Green	X	146	50	0	70	N/A	0	0	N/A	Head	1	2
+Green	Y	147	50	0	70	N/A	0	0	N/A	Tail	1	2
+Green	Y	148	40	0	70	N/A	0	0	N/A	N/A	1	2
+Green	Y	149	40	0	70	N/A	0	0	N/A	Head	1	2
+Green	Z	150	35	0	70	N/A	0	0	Switch 2	Tail/Head	1	2
+Green	ZZ	151	50	0	35	N/A	0	0	Switch 3	Tail/Head	1	2
+Green	YY	152	50	0	35	N/A	0	0	Switch 0	Tail/Head	1	2
+Red	A	0	50	0	40	YARD	0.25	0.25	N/A	Head	1	N/A
+Red	A	1	50	0.5	40	N/A	0.25	0.25	Switch 6	Head	2	N/A
+Red	A	2	50	1	40	N/A	0.5	0.75	N/A	N/A	3	N/A
+Red	A	3	50	1.5	40	N/A	0.75	1.5	N/A	Head	4	N/A
+Red	B	4	50	2	40	N/A	1	2.5	N/A	Head	5	N/A
+Red	B	5	50	1.5	40	N/A	0.75	3.25	N/A	N/A	6	N/A
+Red	B	6	50	1	40	N/A	0.5	3.75	N/A	Head	7	N/A
+Red	C	7	75	0.5	40	STATION: SHADYSIDE	0.38	4.13	N/A	Head	8	N/A
+Red	C	8	75	0	40	N/A	0	4.13	N/A	N/A	9	N/A
+Red	C	9	75	0	40	SWITCH TO/FROM YARD	0	4.13	Switch 12	Head	10	N/A
+Red	D	10	75	0	40	N/A	0	4.13	Switch 12	Head	11	N/A
+Red	D	11	75	-0.5	40	N/A	-0.38	3.75	N/A	N/A	12	N/A
+Red	D	12	75	-0.5	40	N/A	-0.38	3.38	N/A	Head	13	N/A
+Red	E	13	68.4	-1	40	N/A	-0.68	2.69	N/A	Head	14	N/A
+Red	E	14	60	-1	40	N/A	-0.6	2.09	N/A	N/A	15	N/A
+Red	E	15	60	-1	40	SWITCH	-0.6	1.49	Switch 6	Head	16	N/A
+Red	F	16	50	-0.5	40	STATION: HERRON AVE	-0.25	1.24	Switch 6	Head	17	N/A
+Red	F	17	200	-0.5	55	N/A	-1	0.24	N/A	N/A	18	N/A
+Red	F	18	400	-0.06025	70	N/A	-0.24	0	N/A	N/A	1	2
+Red	F	19	400	0	70	N/A	0	0	N/A	N/A	1	2
+Red	F	20	200	0	70	N/A	0	0	N/A	Head	1	2
+Red	G	21	100	0	55	STATION; SWISSVILLE	0	0	N/A	Head	1	2
+Red	G	22	100	0	55	N/A	0	0	N/A	N/A	1	2
+Red	G	23	100	0	55	N/A	0	0	N/A	Head	1	2
+Red	H	24	50	0	70	UNDERGROUND	0	0	N/A	Head	1	2
+Red	H	25	50	0	70	STATION; PENN STATION; UNDERGROUND	0	0	N/A	N/A	1	2
+Red	H	26	50	0	70	UNDERGROUND	0	0	N/A	N/A	1	2
+Red	H	27	50	0	70	SWITCH; UNDERGROUND	0	0	Switch 7	N/A	1	2
+Red	H	28	50	0	70	UNDERGROUND	0	0	Switch 7	N/A	1	2
+Red	H	29	60	0	70	UNDERGROUND	0	0	N/A	N/A	1	2
+Red	H	30	60	0	70	UNDERGROUND	0	0	N/A	N/A	1	2
+Red	H	31	50	0	70	UNDERGROUND	0	0	N/A	N/A	1	2
+Red	H	32	50	0	70	SWITCH; UNDERGROUND	0	0	Switch 8	N/A	1	2
+Red	H	33	50	0	70	UNDERGROUND	0	0	Switch 8	N/A	1	2
+Red	H	34	50	0	70	UNDERGROUND	0	0	N/A	N/A	1	2
+Red	H	35	50	0	70	STATION; STEEL PLAZA; UNDERGROUND	0	0	N/A	N/A	1	2
+Red	H	36	50	0	70	UNDERGROUND	0	0	N/A	N/A	1	2
+Red	H	37	50	0	70	UNDERGROUND	0	0	N/A	N/A	1	2
+Red	H	38	50	0	70	SWITCH; UNDERGROUND	0	0	Switch 9	N/A	1	2
+Red	H	39	50	0	70	UNDERGROUND	0	0	Switch 9	N/A	1	2
+Red	H	40	60	0	70	UNDERGROUND	0	0	N/A	N/A	1	2
+Red	H	41	60	0	70	UNDERGROUND	0	0	N/A	N/A	1	2
+Red	H	42	50	0	70	UNDERGROUND	0	0	N/A	N/A	1	2
+Red	H	43	50	0	70	SWITCH; UNDERGROUND	0	0	Switch 10	N/A	1	2
+Red	H	44	50	0	70	UNDERGROUND	0	0	Switch 10	N/A	1	2
+Red	H	45	50	0	70	STATION; FIRST AVE; UNDERGROUND	0	0	N/A	Head	1	2
+Red	I	46	75	0	70	UNDERGROUND	0	0	N/A	Head	1	2
+Red	I	47	75	0	70	RAILWAY CROSSING	0	0	N/A	N/A	1	2
+Red	I	48	75	0	70	STATION; STATION SQUARE	0	0	N/A	Head	1	2
+Red	J	49	50	0	60	N/A	0	0	N/A	Head	1	2
+Red	J	50	50	0	60	N/A	0	0	N/A	N/A	1	2
+Red	J	51	50	0	55	N/A	0	0	N/A	N/A	1	2
+Red	J	52	43.2	0	55	SWITCH	0	0	Switch 11	N/A	1	2
+Red	J	53	50	0	55	N/A	0	0	Switch 11	N/A	1	2
+Red	J	54	50	0	55	N/A	0	0	N/A	Head	1	2
+Red	K	55	75	0.5	55	N/A	0.38	0.38	N/A	Head	1	2
+Red	K	56	75	0.5	55	N/A	0.38	0.75	N/A	N/A	1	2
+Red	K	57	75	0.5	55	N/A	0.38	1.13	N/A	Head	1	2
+Red	L	58	75	1	55	N/A	0.75	1.88	N/A	Head	1	2
+Red	L	59	75	0.5	55	N/A	0.38	2.25	N/A	N/A	1	2
+Red	L	60	75	0	55	STATION; SOUTH HILLS JUNCTION	0	2.25	N/A	Head	1	2
+Red	M	61	75	-0.5	55	N/A	-0.38	1.88	N/A	Head	1	2
+Red	M	62	75	-1	55	N/A	-0.75	1.13	N/A	N/A	1	2
+Red	M	63	75	-1	55	N/A	-0.75	0.38	N/A	Head	1	2
+Red	N	64	75	-0.5	55	N/A	-0.38	0	N/A	Head	1	2
+Red	N	65	75	0	55	N/A	0	0	N/A	N/A	1	2
+Red	N	66	75	0	55	N/A	0	0	Switch 11	Head	1	2
+Red	O	67	50	0	55	UNDERGROUND	0	0	Switch 10	Head/Head	1	2
+Red	P	68	50	0	55	UNDERGROUND	0	0	N/A	Head	1	2
+Red	P	69	50	0	55	UNDERGROUND	0	0	N/A	N/A	1	2
+Red	P	70	50	0	55	UNDERGROUND	0	0	N/A	Head	1	2
+Red	Q	71	50	0	55	UNDERGROUND	0	0	Switch 9	Head/Head	1	2
+Red	R	72	50	0	55	UNDERGROUND	0	0	Switch 8	Head/Head	1	2
+Red	S	73	50	0	55	UNDERGROUND	0	0	N/A	Head	1	2
+Red	S	74	50	0	55	UNDERGROUND	0	0	N/A	N/A	1	2
+Red	S	75	50	0	55	UNDERGROUND	0	0	N/A	Head	1	2
+Red	T	76	50	0	55	UNDERGROUND	0	0	Switch 7	Head/Head	1	2
+Red	U	77	50	0	35	N/A	0	0	Switch 12	Head/Head	1	2
