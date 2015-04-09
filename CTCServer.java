@@ -85,7 +85,7 @@ public class CTCServer {
 					message = message.replaceAll("/rbracket/", "]");
 					MessageLibrary.httpAcknowledge(exchange);
 					System.out.println("Sending to Track Controller: " + message);
-					// MessageLibrary.sendMessage(8003, message); // UNCOMMENT THIS
+					MessageLibrary.sendMessage("10.0.0.19", 8003, message); // UNCOMMENT THIS
 					break;
 				case "send_all":
 					MessageLibrary.httpAcknowledge(exchange);
@@ -96,7 +96,7 @@ public class CTCServer {
 					timeMessage = timeMessage.replaceAll("/lbracket/", "[");
 					timeMessage = timeMessage.replaceAll("/rbracket/", "]");
 					System.out.println("Sending to All: " + timeMessage);
-					// MessageLibrary.sendMessage(8003, timeMessage); // UNCOMMENT THIS
+					MessageLibrary.sendMessage("10.0.0.19", 8003, timeMessage); // UNCOMMENT THIS
 					// MessageLibrary.sendMessage(8005, timeMessage); // UNCOMMENT THIS
 					// MessageLibrary.sendMessage(8007, timeMessage); // UNCOMMENT THIS
 					// MessageLibrary.sendMessage(8009, timeMessage); // UNCOMMENT THIS

@@ -294,12 +294,16 @@ function trainObjectModel(name, line, block, speed, authority, schedule, ID) {
 	self.Suggested_Speed = ko.observable(speed);
 	self.Suggested_Speed.subscribe(function(newValue) {
 		// Send string to track controller indicating that the train's suggested speed has been updated.
-		updateSuggestedSpeed(self.ID(), newValue);
+		if (self.Active()) {
+			updateSuggestedSpeed(self.ID(), newValue);
+		}
 	});
 	
 	self.Authority = ko.observable(authority);
 	self.Authority.subscribe(function(newValue) {
-		updateAuthority(self.ID(), newValue);
+		if (self.Active()) {
+			updateAuthority(self.ID(), newValue);
+		}
 	});
 	
 	self.Schedule = ko.observableArray(schedule);
@@ -324,8 +328,10 @@ function trainObjectModel(name, line, block, speed, authority, schedule, ID) {
 		var scheduleObject = self.generateScheduleObject();
 		// If we can get to our destination:
 		if (scheduleObject.distance > 0) {
+			// Mark train as active.
+			self.Active(true);
 			// Send path to server.
-			sendStringToServer("CTC : " + self.ID() + " : set, Path = " + scheduleObject.schedule);
+			sendStringToServer("CTC : " + self.Line() + " " + self.ID() + " : set, Path = " + scheduleObject.schedule);
 			// Send authority:
 			self.Authority(scheduleObject.blockDistance);
 			// Send suggested speed:
@@ -333,8 +339,7 @@ function trainObjectModel(name, line, block, speed, authority, schedule, ID) {
 			var endTime = timeStringToMS(self.Schedule()[self.Schedule().length - 1].arrival);
 			var MPH = self.calculateSuggestedSpeed(startTime, endTime, scheduleObject.distance);
 			self.Suggested_Speed(MPH);
-			// Mark train as active.
-			self.Active(true);
+			
 			// Reset the destinations because it's a new schedule.
 			self.NextDestinationIndex(0);
 		}
@@ -379,7 +384,7 @@ function trainObjectModel(name, line, block, speed, authority, schedule, ID) {
 			currentPosition = pathArray.pop();
 			pathArray.shift(); // Remove the first element from the array, since that's where we just started.
 			scheduleString += pathArray.toString();
-			scheduleString += ",{" + currentPosition + "," + self.Schedule()[index].dwell + "},";
+			scheduleString += ",{" + currentPosition + "/" + self.Schedule()[index].dwell + "},";
 			
 		}
 		scheduleString = scheduleString.substring(0, scheduleString.length - 1);
@@ -448,6 +453,9 @@ function importSchedule() {
 		for (var stopNum = 0; stopNum < train.Schedule.length; stopNum++) {
 			var stop = train.Schedule[stopNum];
 			obsSchedule.push(new stopObjectModel(stop.name, stop.block, stop.arrival, stop.dwell));
+		}
+		if (index == (inputSchedule.length - 1)) {
+			trainID = train.ID + 1;
 		}
 		var obsTrain = new trainObjectModel(train.Name, train.Line, train.Block, train.Suggested_Speed, train.Authority, obsSchedule, train.ID);
 		obsTrain.startTime(train.startTime);
@@ -674,11 +682,11 @@ function refreshCurrentRowObject(block) {
 }
 
 function updateSuggestedSpeed(ID, value) {
-	var updateString = "CTC : " + ID + " set, Speed = " + value;
+	var updateString = "CTC : " + ID + " : set, Speed = " + value;
 	sendStringToServer(updateString);
 }
 
 function updateAuthority(ID, value) {
-	var updateString = "CTC : " + ID + " set, Authority = " + value;
+	var updateString = "CTC : " + ID + " : set, Authority = " + value;
 	sendStringToServer(updateString);
 }

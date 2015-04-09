@@ -8,6 +8,12 @@ import com.sun.net.httpserver.HttpServer;
 
 public class MessageLibrary {
 	
+	public class MessageQueue {
+		
+		
+		
+	}
+	
 	// Sends a message to another module with the specified hostname (localhost) and port.
 	public static void sendMessage(String hostName, int portNumber, String message) {
 		new MessageSender(hostName, portNumber, message).start();
