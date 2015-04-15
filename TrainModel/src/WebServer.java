@@ -286,7 +286,7 @@ public class WebServer {
                             }
                         }
                         if (gradient != 9999999 && beaconData != null && authority != -1 && speedlimit != -1 && length != -1 && tunnelisset) {
-                            trains.put(UID, new Train(String.valueOf(UID), new Block(gradient, beaconData, authority, speedlimit, length, tunnel), timemodifier)); //Create Train
+                            trains.put(UID, new Train(String.valueOf(UID), Block.createblock(gradient, beaconData, authority, speedlimit, length, tunnel), timemodifier)); //Create Train
                             MessageLibrary.sendMessage("localhost", TRAINCONTROLLER, "Train Model :" + command[1] + ":" + command[2]); //Create Train Controller
                             trains.get(UID).start(); //Start Train
                         } else {
@@ -331,7 +331,7 @@ public class WebServer {
                                 }
                             }
                             if (gradient != 9999999 && beaconData != null && authority != -1 && speedlimit != -1 && length != -1 && tunnelisset && yardset) {
-                                trains.get(UID).updateBlock(new Block(gradient, beaconData, authority, speedlimit, length, tunnel, yard));
+                                trains.get(UID).updateBlock( Block.createblock(gradient, beaconData, authority, speedlimit, length, tunnel, yard));
                                 MessageLibrary.sendMessage("localhost", TRAINCONTROLLER, "Train Model :" + command[1] + ":" + command[2]);
                             } else {
                                 throw new IllegalArgumentException("all required parameters were not set");

@@ -17,19 +17,9 @@ public class Block {
     private boolean tunnel;
     private boolean yard;
     
-    Block(double gradient, String beaconData, int authority, int speedlimit, int length, boolean tunnel)
+    private Block(double gradient, String beaconData, int authority, int speedlimit, int length, boolean tunnel, boolean yard)
     {
-        this.gradient = gradient;
-        this.beaconData = beaconData;
-        this.authority = authority;
-        this.speedlimit = speedlimit;
-        this.length = length;
-        this.tunnel = tunnel;
-        this.yard = false;
-    }
-    
-    Block(double gradient, String beaconData, int authority, int speedlimit, int length, boolean tunnel, boolean yard)
-    {
+        
         this.gradient = gradient;
         this.beaconData = beaconData;
         this.authority = authority;
@@ -38,7 +28,21 @@ public class Block {
         this.tunnel = tunnel;
         this.yard = yard;
     }
-    
+    public static Block createblock(double gradient, String beaconData, int authority, int speedlimit, int length, boolean tunnel)
+    {
+        return createblock( gradient, beaconData, authority, speedlimit, length, tunnel, false);
+    }
+    public static Block createblock(double gradient, String beaconData, int authority, int speedlimit, int length, boolean tunnel, boolean yard)
+    {
+        //TODO add gradient and beaconData checking
+        if(authority<0) //Invalid authority
+            return null;
+        if(speedlimit<=0)//Invalid speedlimit
+            return null;
+        if(length<=0) //Invalid length
+            return null;
+        return new Block(gradient, beaconData, authority, speedlimit, length, tunnel, yard);
+    }
     public double getGradient() {
         return gradient;
     }
