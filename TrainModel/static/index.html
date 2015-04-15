@@ -1,0 +1,320 @@
+<html>
+
+<head>
+  <title>Train Model</title>
+  <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+  <meta content="utf-8" http-equiv="encoding">
+  <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+	<script >
+   window.onload = function(){
+    disablePage(true);
+    backend();
+  }
+
+function backend()
+{
+  GetTrains();
+  if(document.getElementById("AvailTrains").disabled==false)
+    UpdateTrainData();
+  setTimeout(backend, 1000);
+}
+
+function disablePage( status)
+{
+  var elems = document.getElementsByTagName('input');
+var len = elems.length;
+
+for (var i = 0; i < len; i++) {
+    elems[i].disabled = status;
+}
+document.getElementById("AvailTrains").disabled=status;
+document.getElementById("BRAKES").disabled=status;
+}
+//Needs to verify that the Train exists before sending this This should get all the data that a train is using and post it to the correct web elements
+function UpdateTrainData() 
+{
+  var xmlHttp = null;
+
+  xmlHttp = new XMLHttpRequest();
+  var e = document.getElementById("AvailTrains");
+  var strUser = e.options[e.selectedIndex].value;
+  xmlHttp.open( "GET", "/handlers/"+strUser, true );
+  xmlHttp.onload = function (e) {
+    if (xmlHttp.readyState === 4) {
+      if (xmlHttp.status === 200) {
+        var vel=document.getElementById("velocity");
+        var pass=document.getElementById("occupants");
+        var lights=document.getElementById("TCLindicator");
+        var left=document.getElementById("TCLDindicator");
+        var right=document.getElementById("TCRDindicator");
+        var engine=document.getElementById("TEFindicator");
+        var signal=document.getElementById("SPFindicator");
+        var breaks=document.getElementById("BFindicator");
+        var brakestatus=document.getElementById("brakes");
+        vel.innerHTML="Velocity : " + xmlHttp.responseText.split(" ")[0] + " m/s";
+        pass.innerHTML="Occupants : "+ xmlHttp.responseText.split(" ")[1] + " passengers";
+        if(xmlHttp.responseText.split(" ")[2]==="false")
+          lights.style="background-color:red";
+        else
+          lights.style="background-color:green";
+        if(xmlHttp.responseText.split(" ")[3]==="false")
+          left.style="background-color:red";
+        else
+          left.style="background-color:green";
+        if(xmlHttp.responseText.split(" ")[4]==="false")
+          right.style="background-color:red";
+        else
+          right.style="background-color:green";
+        if(xmlHttp.responseText.split(" ")[5]==="false")
+          engine.style="background-color:red";
+        else
+          engine.style="background-color:green";
+        if(xmlHttp.responseText.split(" ")[6]==="false")
+          signal.style="background-color:red";
+        else
+          signal.style="background-color:green";
+        if(xmlHttp.responseText.split(" ")[7]==="false")
+          breaks.style="background-color:red";
+        else
+          breaks.style="background-color:green";
+        if(xmlHttp.responseText.split(" ")[8]==="1")
+          brakestatus.innerHTML="Service";
+        else if(xmlHttp.responseText.split(" ")[8]==="2")
+          brakestatus.innerHTML="Emergency";
+        else
+          brakestatus.innerHTML="None";
+
+      } else {
+        console.error(xmlHttp.statusText);
+      }
+    }
+  };
+  xmlHttp.onerror = function (e) {
+    console.error(xmlHttp.statusText);
+  };
+  xmlHttp.send( null );
+}
+
+function GetTrains()
+{
+  var xmlHttp = null;
+
+  xmlHttp = new XMLHttpRequest();
+  xmlHttp.open( "GET", "/handlers/Trains", true );
+  xmlHttp.onload = function (e) {
+    if (xmlHttp.readyState === 4) {
+      if (xmlHttp.status === 200) {
+        if(xmlHttp.responseText==="")
+        {
+          disablePage(true);
+          var ids=xmlHttp.responseText.split(" ");
+          var avail= document.getElementById("AvailTrains");
+          avail.innerHTML="";
+        }
+        else
+        {
+          var ids=xmlHttp.responseText.split(" ");
+          var avail= document.getElementById("AvailTrains");
+          var first=true;
+          for(var i = 0; i < ids.length; i++)
+          {
+            if(first)
+            {
+              avail.innerHTML="<option value=\""+ids[i]+"\">Train "+ids[i]+"</option>";
+              first=false;
+            }
+            else
+              avail.innerHTML=avail.innerHTML+"<option value=\""+ids[i]+"\">Train "+ids[i]+"</option>";
+          }
+          disablePage(false);
+}
+} else {
+  console.error(xmlHttp.statusText);
+}
+}
+};
+xmlHttp.onerror = function (e) {
+  console.error(xmlHttp.statusText);
+};
+xmlHttp.send( null );
+}
+
+//Function for verifying that all input values are correct and submitting the form to the correct handler for Control
+function SubmitTrainControl()
+{
+  if(isNaN(document.getElementById("TCPtext").value))
+    return false;
+  var e = document.getElementById("AvailTrains");
+  var strUser = e.options[e.selectedIndex].value;
+  document.TCform.action ="/handlers/"+strUser;
+  return true;
+}
+
+//Function for verifying that all input values are correct and submitting the form to the correct handler for Block
+function SubmitTrackBlock()
+{
+  if(isNaN(document.getElementById("TMSStext").value))
+    return false;
+  if(isNaN(document.getElementById("TMAtext").value))
+    return false;
+  if(isNaN(document.getElementById("TMTCItext").value))
+    return false;
+  var e = document.getElementById("AvailTrains");
+  var strUser = e.options[e.selectedIndex].value;
+  document.TBform.action ="/handlers/"+strUser;
+  return true;
+}
+
+//Function for verifying that all input values are correct and submitting the form to the correct handler for Passengers
+function SubmitTrackPassengers()
+{
+  if(isNaN(document.getElementById("TMAPtext").value))
+    return false;
+  var e = document.getElementById("AvailTrains");
+  var strUser = e.options[e.selectedIndex].value;
+  document.TPform.action ="/handlers/"+strUser;
+  return true;
+}
+
+//Function for verifying that all input values are correct and submitting the form to the correct handler for Fails
+function SubmitFails()
+{
+  var e = document.getElementById("AvailTrains");
+  var strUser = e.options[e.selectedIndex].value;
+  document.Fform.action ="/handlers/"+strUser;
+  return true;
+}
+
+</script>
+<center><h1>Train Model</h1></center>
+<center>Train:
+  <select id="AvailTrains">
+ </select>
+</center>
+<center><div id="velocity">Velocity : </div></center>
+<center><div id="occupants">Occupants : </div></center>
+
+<table align="center"><tr><td>
+	<h3>Failure Modes</h3>
+	<form name="Fform" method="post" target="dummyframe" onsubmit="return SubmitFails();" accept-charset="utf-8">
+  <input type="hidden" name="Component" value="Fails">
+   <table border="1">
+    <tr>
+    	<td>Train Engine Failure</td>
+    	<td><input type="checkbox" name="TEF" id="TEFcheck"></td>
+    	<td><div style="background-color:green" id="TEFindicator">&nbsp&nbsp&nbsp&nbsp&nbsp</div></td>
+    </tr>
+    <tr>
+    	<td>Signal Pickup Failure</td>
+    	<td><input type="checkbox" name="SPF" id="SPFcheck"></td>
+    	<td><div style="background-color:green" id="SPFindicator">&nbsp</div></td>
+    </tr>
+    <tr>
+    	<td>Break Failure</td>
+    	<td><input type="checkbox" name="BF" id="BFcheck"></td>
+    	<td><div style="background-color:green" id="BFindicator">&nbsp</div></td>
+    </tr>
+  </table>
+  <input type="submit" value="Update Failure Modes">
+</form> 
+</td>
+<td>
+	<h3>Track Block</h3>
+	<form name="TBform" method="post" target="dummyframe" onsubmit="return SubmitTrackBlock();" accept-charset="utf-8">
+  <input type="hidden" name="Component" value="Block">
+   <table border="1">
+    <tr>
+    	<td>Suggested Speed</td>
+    	<td><input type="text" name="TMSS" id="TMSStext" size="5" value="0"></td>
+    	<td>mph</td>
+    </tr>
+    <tr>
+    	<td>Authority</td>
+    	<td><input type="text" name="TMA" id="TMAtext" size="5" value="0"></td>
+    	<td>blocks</td>
+    </tr>
+    <tr>
+    	<td>Gradient</td>
+    	<td><input type="text" name="TMTCI" id="TMTCItext" size="5" value="0"></td>
+    	<td></td>
+    </tr>
+    <tr>
+    	<td>Beacon String</td>
+    	<td><input type="text" name="TMTCI" id="TMTCItext" size="5"></td>
+    	<td></td>
+    </tr>
+    <tr>
+      <td>Tunnel</td>
+      <td><center><input type="checkbox" name="T" id="Tcheck"></center></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Yard</td>
+      <td><center><input type="checkbox" name="Y" id="Ycheck"></center></td>
+      <td></td>
+    </tr>
+  </table>
+  <input type="submit" value="Create New Block">
+</form> 
+</td></tr>
+<tr><td>
+	<h3>Train Control</h3>
+	<form name="TCform" method="post" target="dummyframe" onsubmit="return SubmitTrainControl();" accept-charset="utf-8">
+  <input type="hidden" name="Component" value="Control">
+   <table border="1">
+    <tr>
+    	<td>Lights</td>
+    	<td><center><input type="checkbox" name="L" id="TCLcheck"></center></td>
+    	<td><div style="background-color:green" id="TCLindicator">&nbsp&nbsp&nbsp&nbsp&nbsp</div></td>
+    </tr>
+    <tr>
+    	<td>Left Doors</td>
+    	<td><center><input type="checkbox" name="LD" id="TCLDcheck"></center></td>
+    	<td><div style="background-color:green" id="TCLDindicator">&nbsp</div></td>
+    </tr>
+    <tr>
+    	<td>Right Doors</td>
+    	<td><center><input type="checkbox" name="RD" id="TCRDcheck"></center></td>
+    	<td><div style="background-color:green" id="TCRDindicator">&nbsp</div></td>
+    </tr>
+    <tr>
+    	<td>Power</td>
+    	<td><center><input type="text" name="TCP" id="TCPtext" size="5" value="0"></center></td>
+    	<td>Watts</td>
+    </tr>
+    <tr>
+    	<td>Brakes</td>
+    	<td>
+    		<select id="BRAKES" name="BRAKES">
+          <option value="0">None</option>
+          <option value="1">Service</option>
+          <option value="2">Emergency</option>
+        </select>
+      </td>
+      <td><div id="brakes">None</div></td>
+    </tr>
+  </table>
+  <input type="submit" value="Update Train Control">
+</form> 
+</td>
+<td>
+<h3>Track Passengers</h3>
+  <form name="TPform" method="post" target="dummyframe" onsubmit="return SubmitTrackPassengers();" accept-charset="utf-8">
+  <input type="hidden" name="Component" value="Passengers">
+   <table border="1">
+    <tr>
+      <td>Add Passengers</td>
+      <td><input type="text" name="TMAP" id="TMAPtext" size="5" value="0"></td>
+      <td>people</td>
+    </tr>
+  </table>
+  <input type="submit" value="Update Passengers">
+</form>
+</td></tr></table>
+</body>
+
+</html>
+<iframe width="0" height="0" border="0" name="dummyframe" id="dummyframe"><meta http-equiv="Content-type" content="text/html;charset=UTF-8"></iframe>
