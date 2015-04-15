@@ -93,8 +93,7 @@ public class WebServer {
                 {
                     System.out.println(body);
                     String[] line = splitbody[1].split("=");
-                    if(line[0].equals("TMAP"))
-                    {
+                    if (line[0].equals("TMAP")) {
                         trains.get(TrainUID).addpassengers(Integer.valueOf(line[1]));
                     }
                 } else if (splitbody[0].equals("Component=Control")) {
@@ -249,6 +248,11 @@ public class WebServer {
                         } else if (sides[0].contains("Power")) {
                             double power = Double.valueOf(sides[1].replaceAll("\\s+", ""));
                             trains.get(UID).UpdatePower(power);
+                        } else if (sides[0].contains("Train Lights")) {
+                            boolean lights=false;
+                            if(sides[1].contains("On"))
+                                lights=true;
+                            trains.get(UID).Lights(lights);
                         } else {
                             throw new IllegalArgumentException("all required parameters were not set");
                         }
@@ -331,7 +335,7 @@ public class WebServer {
                                 }
                             }
                             if (gradient != 9999999 && beaconData != null && authority != -1 && speedlimit != -1 && length != -1 && tunnelisset && yardset) {
-                                trains.get(UID).updateBlock( Block.createblock(gradient, beaconData, authority, speedlimit, length, tunnel, yard));
+                                trains.get(UID).updateBlock(Block.createblock(gradient, beaconData, authority, speedlimit, length, tunnel, yard));
                                 MessageLibrary.sendMessage("localhost", TRAINCONTROLLER, "Train Model :" + command[1] + ":" + command[2]);
                             } else {
                                 throw new IllegalArgumentException("all required parameters were not set");
