@@ -1,0 +1,8 @@
+Example Messages:
+
+Track Controller : Train 0 : set, Location = 7
+Track Controller : Red 27 : set, Switch = [28, 76]
+Track Controller : Red 47 : set, Crossing = Closed
+Track Controller : Green 3 : set, Status = Italian_flag
+Track Controller : Green 4 : set, Heater = On
+Track Controller : Green 5 : set, Lights = Green

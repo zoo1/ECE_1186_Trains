@@ -626,6 +626,9 @@ function checkServerUpdates() {
 							}
 							// Decrease authority.
 							train.Authority(train.Authority() - 1);
+							if (train.Authority() == 0) {
+								train.Suggested_Speed(0);
+							}
 						}
 					}
 					break;
