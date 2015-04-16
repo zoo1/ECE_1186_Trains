@@ -160,7 +160,9 @@ function SubmitTrackBlock()
     return false;
   if(isNaN(document.getElementById("TMAtext").value))
     return false;
-  if(isNaN(document.getElementById("TMTCItext").value))
+  if(isNaN(document.getElementById("TMGtext").value))
+    return false;
+  if(isNaN(document.getElementById("TMLtext").value))
     return false;
   var e = document.getElementById("AvailTrains");
   var strUser = e.options[e.selectedIndex].value;
@@ -237,13 +239,18 @@ function SubmitFails()
     	<td>blocks</td>
     </tr>
     <tr>
+    	<td>Length</td>
+    	<td><input type="text" name="TML" id="TMLtext" size="5" value="0"></td>
+    	<td>meters</td>
+    </tr>
+    <tr>
     	<td>Gradient</td>
-    	<td><input type="text" name="TMTCI" id="TMTCItext" size="5" value="0"></td>
+    	<td><input type="text" name="TMG" id="TMGtext" size="5" value="0"></td>
     	<td></td>
     </tr>
     <tr>
     	<td>Beacon String</td>
-    	<td><input type="text" name="TMTCI" id="TMTCItext" size="5"></td>
+    	<td><input type="text" name="TMBS" id="TMBStext" size="5"></td>
     	<td></td>
     </tr>
     <tr>

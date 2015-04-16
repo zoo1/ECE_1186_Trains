@@ -70,7 +70,7 @@ public class WebServer {
                 if (splitbody[0].equals("Component=Fails")) //Update failure modes
                 {
                     boolean engine = false, signal = false, brake = false;
-                    for (int i = 0; i < splitbody.length; i++) {
+                    for (int i = 1; i < splitbody.length; i++) {
                         String[] line = splitbody[i].split("=");
                         if (line.length != 2) {
                             MessageLibrary.sendHttpResponse(exchange, "Request Invalid");
@@ -88,17 +88,63 @@ public class WebServer {
                     trains.get(TrainUID).setSigFail(signal);
                 } else if (splitbody[0].equals("Component=Block")) //Update Block
                 {
-                    System.out.println(body);
+                    boolean yard=false, tunnel=false;
+                    double speedLimit=-9999,gradient=-9999;
+                    String beaconString=null;
+                    int authority=-1, length=-99999;
+                    for(int i = 1; i < splitbody.length; i++) {
+                        String[] line = splitbody[i].split("=");
+                        System.out.println(line[0]);
+                        if(line[0].contains("TMSS"))
+                        {
+                            speedLimit=Double.valueOf(line[1]);
+                        }
+                        else if(line[0].contains("TML"))
+                        {
+                            length=Integer.valueOf(line[1]);
+                        }
+                        else if(line[0].contains("TMA"))
+                        {
+                            authority=Integer.valueOf(line[1]);
+                        }
+                        else if(line[0].contains("TMG"))
+                        {
+                            gradient=Double.valueOf(line[1]);
+                        }
+                        else if(line[0].contains("TMBS"))
+                        {
+                            beaconString=line[1];
+                        }
+                        else if(line[0].equals("T"))
+                        {
+                            tunnel=true;
+                        }
+                        else if(line[0].equals("Y"))
+                        {
+                            yard=true;
+                        }
+                    }
+                    if(beaconString!=null)
+                    {
+                    Block b = Block.createblock(gradient, beaconString, authority, speedLimit, length, tunnel, yard); //Create Block and append to train
+                    if(b!=null)
+                    {
+                        trains.get(TrainUID).updateBlock(b);
+                    }
+                    else
+                        MessageLibrary.sendHttpResponse(exchange, "Request Invalid");
+                    }
+                    else
+                        MessageLibrary.sendHttpResponse(exchange, "Request Invalid");
                 } else if (splitbody[0].equals("Component=Passengers")) //Update Passengers
                 {
-                    System.out.println(body);
                     String[] line = splitbody[1].split("=");
                     if (line[0].equals("TMAP")) {
                         trains.get(TrainUID).addpassengers(Integer.valueOf(line[1]));
                     }
                 } else if (splitbody[0].equals("Component=Control")) {
                     boolean lights = false, right = false, left = false;
-                    for (int i = 0; i < splitbody.length; i++) {
+                    for (int i = 1; i < splitbody.length; i++) {
                         String[] line = splitbody[i].split("=");
                         if (line.length != 2) {
                             MessageLibrary.sendHttpResponse(exchange, "Request Invalid");
