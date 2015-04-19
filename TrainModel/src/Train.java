@@ -33,8 +33,8 @@ public class Train extends Thread {
     private boolean leftdoors = false;
     private boolean rightdoors = false;
     private volatile double power = 0; //in Watts
-    private static double position = 0; //in m
-    private static double velocity = 0; //in m/s
+    private volatile static double position = 0; //in m
+    private volatile static double velocity = 0; //in m/s
     private static double acceleration = 0;//in m/s^2
     private long prevtime;//in s
     final private double maxspeed = 19.444444444444444; //m/s
@@ -176,18 +176,20 @@ public class Train extends Thread {
             double finalvelocity = 0; // v(t)
             double finalaccel = 0;// a(t)
             double lastposition=position;
-            double truetimestep = timemodifier * (System.currentTimeMillis() - prevtime) / 1000.0; //calc last function call * time modifier
+            double truetimestep = (System.currentTimeMillis() - prevtime) / 1000.0; //calc last function call * time modifier
             //store last time
             prevtime = System.currentTimeMillis();
             if (brakestatus == 1 && !brakeFail) //Service Brake
             {
                 acceleration = -SERVICEBRAKE;
+                finalaccel = -SERVICEBRAKE;
             }
             if (brakestatus == 2 && !brakeFail) //E Brake
             {
                 acceleration = -EMERGENCYBRAKE;
+                finalaccel = -EMERGENCYBRAKE;
             }
-            finalvelocity = velocity + acceleration * truetimestep;
+            finalvelocity = velocity/timemodifier + (acceleration/timemodifier) * truetimestep;
             if (brakestatus > 0 && finalvelocity <= 0 && !brakeFail) { //If brakes are engaged and the train has negative velocity it should be stopped
                 finalvelocity = 0;
                 finalaccel = 0;
@@ -217,6 +219,7 @@ public class Train extends Thread {
                     else
                     {
                         finalforce=0;
+                        finalvelocity = 0;
                         velocity = 0;
                     }
                 }
@@ -224,15 +227,17 @@ public class Train extends Thread {
                     finalforce=engforce-gradeforce-rollingforce;
                 
                 finalaccel = finalforce / totalmass;
-                if(finalaccel/timemodifier > maxacceleration)
+                if(finalaccel > maxacceleration)
                 {
                     finalaccel=maxacceleration;
                 }
-                if(finalvelocity/timemodifier > maxspeed) { //cap speed at speed limit
+                if(finalvelocity > maxspeed) { //cap speed at speed limit
                     finalvelocity = maxspeed;
                     finalaccel = 0; //and stop acceleration (for position calc in next step)
                 }
             }
+            finalvelocity *= timemodifier;
+            finalaccel *= timemodifier;
             position = position + (.5 * finalvelocity * truetimestep) + (.25 * finalaccel * truetimestep * truetimestep);
             if (position > (currentBlock.getLength() * .97)) // request next block
             {
