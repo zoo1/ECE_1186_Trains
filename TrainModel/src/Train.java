@@ -213,16 +213,22 @@ public class Train extends Thread {
                     if(velocity > 0)
                     {
                         finalforce = engforce-gradeforce-rollingforce;
-                        velocity = 0;
                     }
                     else
+                    {
                         finalforce=0;
+                        velocity = 0;
+                    }
                 }
                 else
                     finalforce=engforce-gradeforce-rollingforce;
                 
                 finalaccel = finalforce / totalmass;
-                if (finalvelocity/timemodifier > maxspeed) { //cap speed at speed limit
+                if(finalaccel/timemodifier > maxacceleration)
+                {
+                    finalaccel=maxacceleration;
+                }
+                if(finalvelocity/timemodifier > maxspeed) { //cap speed at speed limit
                     finalvelocity = maxspeed;
                     finalaccel = 0; //and stop acceleration (for position calc in next step)
                 }
