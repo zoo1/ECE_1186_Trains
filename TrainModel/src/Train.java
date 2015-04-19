@@ -42,7 +42,7 @@ public class Train extends Thread {
     private volatile boolean lights = false;
     private volatile boolean engFail = false;
     private volatile boolean sigFail = false;
-    private volatile boolean breakFail = false;
+    private volatile boolean brakeFail = false;
 
     public boolean isEngFail() {
         return engFail;
@@ -50,6 +50,7 @@ public class Train extends Thread {
 
     public void setEngFail(boolean engFail) {
         this.engFail = engFail;
+        MessageLibrary.sendMessage("localhost", TRAINCONTROLLER, "Train Model : " + UID + " :set, EngineFail=" + brakeFail);
     }
 
     public boolean isSigFail() {
@@ -58,14 +59,16 @@ public class Train extends Thread {
 
     public void setSigFail(boolean sigFail) {
         this.sigFail = sigFail;
+        MessageLibrary.sendMessage("localhost", TRAINCONTROLLER, "Train Model : " + UID + " :set, SignalFail=" + brakeFail);
     }
 
-    public boolean isBreakFail() {
-        return breakFail;
+    public boolean isBrakeFail() {
+        return brakeFail;
     }
 
-    public void setBreakFail(boolean breakFail) {
-        this.breakFail = breakFail;
+    public void setBrakeFail(boolean brakeFail) {
+        this.brakeFail = brakeFail;
+        MessageLibrary.sendMessage("localhost", TRAINCONTROLLER, "Train Model : " + UID + " :set, BrakeFail=" + brakeFail);
     }
 
     public boolean lightsOn() {
@@ -176,19 +179,19 @@ public class Train extends Thread {
             double truetimestep = timemodifier * (System.currentTimeMillis() - prevtime) / 1000.0; //calc last function call * time modifier
             //store last time
             prevtime = System.currentTimeMillis();
-            if (brakestatus == 1) //Service Brake
+            if (brakestatus == 1 && !brakeFail) //Service Brake
             {
                 acceleration = -SERVICEBRAKE;
             }
-            if (brakestatus == 2) //E Brake
+            if (brakestatus == 2 && !brakeFail) //E Brake
             {
                 acceleration = -EMERGENCYBRAKE;
             }
             finalvelocity = velocity + acceleration * truetimestep;
-            if (brakestatus > 0 && finalvelocity <= 0) { //If brakes are engaged and the train has negative velocity it should be stopped
+            if (brakestatus > 0 && finalvelocity <= 0 && !brakeFail) { //If brakes are engaged and the train has negative velocity it should be stopped
                 finalvelocity = 0;
                 finalaccel = 0;
-            } else if (brakestatus == 0) {
+            } else if (brakestatus == 0 || brakeFail) {
                 double blockradient = Math.toRadians(Math.toDegrees(Math.atan(currentBlock.getGradient()/100)));
                 double rollingforce = TRAINFRICTION * (Math.cos(blockradient) * GRAVITY * totalmass);
                 double gradeforce = Math.sin(blockradient) * totalmass * GRAVITY;
@@ -198,7 +201,9 @@ public class Train extends Thread {
                     engforce = 0;
                 } else if (finalvelocity == 0) {
                     engforce = maxacceleration * totalmass;
-                } else {
+                } else if (engFail)
+                    engforce = 0;
+                else {
                     engforce = power / finalvelocity;
                 }
                 double finalforce=0;

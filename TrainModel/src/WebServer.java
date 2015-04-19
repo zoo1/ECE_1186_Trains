@@ -83,7 +83,7 @@ public class WebServer {
                             brake = true;
                         }
                     }
-                    trains.get(TrainUID).setBreakFail(brake);
+                    trains.get(TrainUID).setBrakeFail(brake);
                     trains.get(TrainUID).setEngFail(engine);
                     trains.get(TrainUID).setSigFail(signal);
                 } else if (splitbody[0].equals("Component=Block")) //Update Block
@@ -186,7 +186,7 @@ public class WebServer {
                 {
                     int TrainUID = Integer.valueOf((exchange.getRequestURI().getPath().substring(handlerDir.length() + 1)).replaceAll("\\s+", ""));
                     if (trains.containsKey(TrainUID)) {
-                        MessageLibrary.sendHttpResponse(exchange, "" + String.format("%.5f", trains.get(TrainUID).getVelocity()) + " " + trains.get(TrainUID).getPassengers() + " " + trains.get(TrainUID).lightsOn() + " " + trains.get(TrainUID).isLeftdoors() + " " + trains.get(TrainUID).isRightdoors() + " " + trains.get(TrainUID).isEngFail() + " " + trains.get(TrainUID).isSigFail() + " " + trains.get(TrainUID).isBreakFail() + " " + trains.get(TrainUID).getBrakestatus());
+                        MessageLibrary.sendHttpResponse(exchange, "" + String.format("%.5f", trains.get(TrainUID).getVelocity()) + " " + trains.get(TrainUID).getPassengers() + " " + trains.get(TrainUID).lightsOn() + " " + trains.get(TrainUID).isLeftdoors() + " " + trains.get(TrainUID).isRightdoors() + " " + trains.get(TrainUID).isEngFail() + " " + trains.get(TrainUID).isSigFail() + " " + trains.get(TrainUID).isBrakeFail() + " " + trains.get(TrainUID).getBrakestatus());
                     } else {
                         MessageLibrary.sendHttpResponse(exchange, "" + "0000");
                     }
@@ -382,7 +382,8 @@ public class WebServer {
                             }
                             if (gradient != 9999999 && beaconData != null && authority != -1 && speedlimit != -1 && length != -1 && tunnelisset && yardset) {
                                 trains.get(UID).updateBlock(Block.createblock(gradient, beaconData, authority, speedlimit, length, tunnel, yard));
-                                MessageLibrary.sendMessage("localhost", TRAINCONTROLLER, "Train Model :" + command[1] + ":" + command[2]);
+                                if(!trains.get(UID).isSigFail())
+                                    MessageLibrary.sendMessage("localhost", TRAINCONTROLLER, "Train Model :" + command[1] + ":" + command[2]);
                             } else {
                                 throw new IllegalArgumentException("all required parameters were not set");
                             }
