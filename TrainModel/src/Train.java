@@ -1,5 +1,7 @@
 
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -23,6 +25,8 @@ public class Train extends Thread {
     private final int MAXIMUMPASSENGERS = 222;
     private final double SERVICEBRAKE = 1.2; //m/s²
     private final double EMERGENCYBRAKE = 2.73; //m/s²
+    private final double TRAINFRICTION = .001;
+    private final double GRAVITY = 9.81; //m/s²
     private volatile double totalmass;
     private volatile double timemodifier = 1;
     private int brakestatus = 0;
@@ -155,11 +159,14 @@ public class Train extends Thread {
     }
 
     public void UpdatePower(double power) {
-        if (power > 0 && power<=120000) { //Max Power 120 kilowatss
+        if(power < 0)
+            this.power = 0;
+        else if(power > 120000) //Max Power 120 kilowatts
+            this.power = 120000;
+        else
             this.power = power;
-        }
     }
-
+    
     public void run() {
         boolean running=true;
         while (running) {
@@ -182,8 +189,11 @@ public class Train extends Thread {
                 finalvelocity = 0;
                 finalaccel = 0;
             } else if (brakestatus == 0) {
+                double blockradient = Math.toRadians(Math.toDegrees(Math.atan(currentBlock.getGradient()/100)));
+                double rollingforce = TRAINFRICTION * (Math.cos(blockradient) * GRAVITY * totalmass);
+                double gradeforce = Math.sin(blockradient) * totalmass * GRAVITY;
                 //EngForce = power / v;
-                double engforce;
+                double engforce = 0;
                 if (power == 0) {
                     engforce = 0;
                 } else if (finalvelocity == 0) {
@@ -191,9 +201,23 @@ public class Train extends Thread {
                 } else {
                     engforce = power / finalvelocity;
                 }
-
-                finalaccel = engforce / totalmass;
-                if (finalvelocity > maxspeed) { //cap speed at speed limit
+                double finalforce=0;
+                //3 different force summations
+                if(Math.abs(engforce-gradeforce) < rollingforce) //Rolling Force should not be the driving force
+                {
+                    if(velocity > 0)
+                    {
+                        finalforce = engforce-gradeforce-rollingforce;
+                        velocity = 0;
+                    }
+                    else
+                        finalforce=0;
+                }
+                else
+                    finalforce=engforce-gradeforce-rollingforce;
+                
+                finalaccel = finalforce / totalmass;
+                if (finalvelocity/timemodifier > maxspeed) { //cap speed at speed limit
                     finalvelocity = maxspeed;
                     finalaccel = 0; //and stop acceleration (for position calc in next step)
                 }
@@ -217,11 +241,17 @@ public class Train extends Thread {
             {
                 MessageLibrary.sendMessage("localhost", TRAINCONTROLLER, "Train Model : " + UID + " : set, Position=" + position);
             }
-            if (velocity != finalvelocity&&running) {
+            if (velocity != finalvelocity&&running) 
+            {
                 MessageLibrary.sendMessage("localhost", TRAINCONTROLLER, "Train Model : " + UID + " : set, Actual Speed=" + finalvelocity);
             }
             velocity = finalvelocity;
             acceleration = finalaccel;
+            try {
+                Thread.sleep(1); //millisecond time tic
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Train.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 

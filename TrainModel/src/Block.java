@@ -34,7 +34,11 @@ public class Block {
     }
     public static Block createblock(double gradient, String beaconData, int authority, double speedlimit, int length, boolean tunnel, boolean yard)
     {
-        //TODO add gradient and beaconData checking
+        
+        if(gradient < -2 || gradient > 2) //Invalid gradient
+            return null;
+        if(beaconData.length()>20) //beaconData too large
+            return null;
         if(authority<0) //Invalid authority
             return null;
         if(speedlimit<=0)//Invalid speedlimit
