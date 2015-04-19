@@ -236,6 +236,12 @@ public class Train extends Thread {
                     finalaccel = 0; //and stop acceleration (for position calc in next step)
                 }
             }
+            if(finalvelocity>currentBlock.getSpeed()) //Crash the train
+            {
+                MessageLibrary.sendMessage("localhost", TRAINCONTROLLER, "Train Model : " + UID + " : delete");
+                running=false;
+                MessageLibrary.sendMessage("localhost", 8007, "Train Model: "+ UID + " : delete");
+            }
             finalvelocity *= timemodifier;
             finalaccel *= timemodifier;
             position = position + (.5 * finalvelocity * truetimestep) + (.25 * finalaccel * truetimestep * truetimestep);
