@@ -26,7 +26,8 @@ public class Test {
     private static String[] messages;
     private static int i=0;
     public static void main(String args[]) {
-        MessageLibrary.sendMessage("localhost",8007,"Track Model : 1 : create, Gradient=11, Beacon String=750, Authority=5, Speed Limit=5, Length=500, Tunnel=true, Yard=true");
+        //MessageLibrary.sendMessage("localhost",8007,"Track Model : 1 : create, Gradient=0, Beacon String=750, Authority=5, Speed Limit=5, Length=500, Tunnel=true");
+        MessageLibrary.sendMessage("localhost",8007,"CTC : 0 : set, TimeModifier = 11.0");
         startSocketListener();
         messages= new String[10];
         messages[0]="Track Model : 1 : set, Gradient=11, Beacon String=250, Authority=5, Speed Limit=5, Length=500, Tunnel=true, Yard=false";

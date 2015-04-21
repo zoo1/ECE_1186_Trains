@@ -80,6 +80,7 @@ public class Train extends Thread {
     }
 
     Train(String UID, Block firstblock, double timemodifier) {
+        
         this.UID = UID;
         this.currentBlock = firstblock;
         this.crew = 2;
@@ -90,7 +91,8 @@ public class Train extends Thread {
     }
 
     public void addpassengers(int count) {
-        passengers = passengers + count;
+        if(count>=0)
+            passengers = passengers + count;
         if (passengers > MAXIMUMPASSENGERS) //too many passengers on train
         {
             MessageLibrary.sendMessage("localhost", TRACKMODEL, "Train Model : " + UID + " :set, Passengers=" + (passengers - MAXIMUMPASSENGERS));
@@ -132,7 +134,7 @@ public class Train extends Thread {
         }
     }
 
-    public void updateBreak(int brake) {
+    public void updateBrake(int brake) {
         if (brake == 0 || brake == 1 || brake == 2) {
             this.brakestatus = brake;
         }

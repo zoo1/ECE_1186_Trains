@@ -152,7 +152,7 @@ public class WebServer {
                         if (line[0].equals("TCP")) {
                             trains.get(TrainUID).UpdatePower(Double.valueOf(line[1]));
                         } else if (line[0].equals("BRAKES")) {
-                            trains.get(TrainUID).updateBreak(Integer.valueOf(line[1]));
+                            trains.get(TrainUID).updateBrake(Integer.valueOf(line[1]));
                         } else if (line[0].equals("L")) {
                             lights = true;
                         } else if (line[0].equals("LD")) {
@@ -284,7 +284,7 @@ public class WebServer {
                             } else {
                                 throw new IllegalArgumentException("all required parameters were not set");
                             }
-                            trains.get(UID).updateBreak(brakes);
+                            trains.get(UID).updateBrake(brakes);
                         } else if (sides[0].contains("Left Doors")) {
                             boolean leftdoors = sides[1].contains("true");
                             trains.get(UID).leftdoor(leftdoors);

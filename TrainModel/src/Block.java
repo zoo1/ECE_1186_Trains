@@ -41,7 +41,7 @@ public class Block {
             return null;
         if(authority<0) //Invalid authority
             return null;
-        if(speedlimit<=0)//Invalid speedlimit
+        if(speedlimit<0)//Invalid speedlimit
             return null;
         if(length<=0) //Invalid length
             return null;
