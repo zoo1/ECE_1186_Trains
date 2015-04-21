@@ -81,6 +81,12 @@ public class Train extends Thread {
 
     Train(String UID, Block firstblock, double timemodifier) {
         
+        if(UID == null)
+            throw new IllegalArgumentException("UID cannot be null");
+        if(firstblock == null)
+            throw new IllegalArgumentException("Block cannot be null");
+        if(timemodifier <= 0)
+            throw new IllegalArgumentException("TimeModifier cannot be less than of equal to zero");
         this.UID = UID;
         this.currentBlock = firstblock;
         this.crew = 2;
