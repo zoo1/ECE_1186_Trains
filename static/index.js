@@ -1,3 +1,5 @@
+/* CTC Client Javascript: Version 4.0*/
+
 $(document).ready(function() {
 	initModules();
 	loadModels();
@@ -634,7 +636,6 @@ function checkServerUpdates() {
 							if (train.Authority() == 0) {
 								train.Suggested_Speed(0);
 							}
-<<<<<<< HEAD
 							
 							// Update stations throughput
 							for (var station_index = 0; station_index < trainsDataModel.stationsList().length; station_index++) {
@@ -643,8 +644,6 @@ function checkServerUpdates() {
 									station.Throughput(station.Throughput() + 1);
 								}
 							}
-=======
->>>>>>> origin/CTCServer
 						}
 					}
 					break;
