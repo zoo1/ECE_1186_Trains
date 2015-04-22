@@ -247,6 +247,7 @@ public class Train extends Thread {
             if(finalvelocity>currentBlock.getSpeed()) //Crash the train
             {
                 MessageLibrary.sendMessage("localhost", TRAINCONTROLLER, "Train Model : " + UID + " : delete");
+                MessageLibrary.sendMessage("localhost", TRACKMODEL, "Train Model : " + UID + " : delete");
                 running=false;
                 MessageLibrary.sendMessage("localhost", 8007, "Train Model: "+ UID + " : delete");
             }
@@ -263,7 +264,7 @@ public class Train extends Thread {
                 }
                 else
                 {
-                    MessageLibrary.sendMessage("localhost", TRACKMODEL, "Train Model : " + UID + " : get,block");
+                    MessageLibrary.sendMessage("localhost", TRACKMODEL, "Train Model : " + UID + " : get,block = stop");
                     position = 0;
                 }
             }

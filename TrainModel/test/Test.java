@@ -26,8 +26,8 @@ public class Test {
     private static String[] messages;
     private static int i=0;
     public static void main(String args[]) {
-        //MessageLibrary.sendMessage("localhost",8007,"Track Model : 1 : create, Gradient=0, Beacon String=750, Authority=5, Speed Limit=5, Length=500, Tunnel=true");
-        MessageLibrary.sendMessage("localhost",8007,"CTC : 0 : set, TimeModifier = 11.0");
+        MessageLibrary.sendMessage("localhost",8007,"Track Model : 1 : create, Gradient=0, Beacon String=L_Harbor_60_200, Authority=5, Speed Limit=5, Length=500, Tunnel=true");
+        //MessageLibrary.sendMessage("localhost",8007,"CTC : 0 : set, TimeModifier = 11.0");
         startSocketListener();
         messages= new String[10];
         messages[0]="Track Model : 1 : set, Gradient=11, Beacon String=250, Authority=5, Speed Limit=5, Length=500, Tunnel=true, Yard=false";
@@ -45,7 +45,7 @@ public class Test {
         public void run() {
             while (true) {
                 try (
-                        ServerSocket serverSocket = new ServerSocket(8005, 0, InetAddress.getByName(null));
+                        ServerSocket serverSocket = new ServerSocket(8005, 0);
                         Socket clientSocket = serverSocket.accept();
                         BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                         PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);) {

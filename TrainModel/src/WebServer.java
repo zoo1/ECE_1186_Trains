@@ -238,7 +238,7 @@ public class WebServer {
         public void run() {
             while (true) {
                 try (
-                        ServerSocket serverSocket = new ServerSocket(MYLISTENSOCKET, 0, InetAddress.getByName(null));
+                        ServerSocket serverSocket = new ServerSocket(MYLISTENSOCKET, 0);
                         Socket clientSocket = serverSocket.accept();
                         BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                         PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);) {
@@ -275,11 +275,11 @@ public class WebServer {
                         if (sides[0].contains("Brakes")) // Update Brakes on specific Train
                         {
                             int brakes = 0;
-                            if (sides[1].contains("None")) {
+                            if (sides[1].contains("none")) {
                                 brakes = 0;
-                            } else if (sides[1].contains("Service")) {
+                            } else if (sides[1].contains("service")) {
                                 brakes = 1;
-                            } else if (sides[1].contains("Emergency")) {
+                            } else if (sides[1].contains("emergency")) {
                                 brakes = 2;
                             } else {
                                 throw new IllegalArgumentException("all required parameters were not set");
