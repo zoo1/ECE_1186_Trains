@@ -33,9 +33,9 @@ public class Train extends Thread {
     private boolean leftdoors = false;
     private boolean rightdoors = false;
     private volatile double power = 0; //in Watts
-    private volatile static double position = 0; //in m
-    private volatile static double velocity = 0; //in m/s
-    private static double acceleration = 0;//in m/s^2
+    private volatile double position = 0; //in m
+    private volatile double velocity = 0; //in m/s
+    private double acceleration = 0;//in m/s^2
     private long prevtime;//in s
     final private double maxspeed = 19.444444444444444; //m/s
     final private double maxacceleration = 0.5; //m/s^2

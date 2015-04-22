@@ -103,7 +103,9 @@ function UpdateTrainData()
 function GetTrains()
 {
   var xmlHttp = null;
-  var selected = document.getElementById("AvailTrains").selectedIndex;
+  var selected = null;
+  if(document.getElementById("AvailTrains").selectedIndex>0)
+    selected = document.getElementById("AvailTrains").selectedIndex;
   xmlHttp = new XMLHttpRequest();
   xmlHttp.open( "GET", "/handlers/Trains", true );
   xmlHttp.onload = function (e) {
@@ -132,7 +134,8 @@ function GetTrains()
               avail.innerHTML=avail.innerHTML+"<option value=\""+ids[i]+"\">Train "+ids[i]+"</option>";
           }
           disablePage(false);
-          document.getElementById("AvailTrains").selectedIndex = selected;
+          if(selected!=null)
+            document.getElementById("AvailTrains").selectedIndex = selected;
 }
 } else {
   console.error(xmlHttp.statusText);
