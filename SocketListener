@@ -1,3 +1,4 @@
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -34,81 +35,59 @@ class SocketListener extends Thread {
                                 for (int i = 1 ; i < nRow ; i++)
                                     for (int j = 0 ; j < nCol ; j++)
                                         tableData[i][j] = dtm.getValueAt(i,j);
-                                
-                                //FOR PROTOTYPE PURPOSES ONLY
-                                //--------------------------------------------------------------------
-                                /*
-                                Object[][] prototypedata = new Object[8][nCol];
-                                for (int j=0; j < nCol; j++)
-                                    prototypedata[0][j] = dtm.getValueAt(230, j);
-                                for (int j=0; j < nCol; j++)
-                                    prototypedata[1][j] = dtm.getValueAt(160, j);
-                                for (int j=0; j < nCol; j++)
-                                    prototypedata[2][j] = dtm.getValueAt(159, j);
-                                for (int j=0; j < nCol; j++)
-                                    prototypedata[3][j] = dtm.getValueAt(156, j);
-                                for (int j=0; j < nCol; j++)
-                                    prototypedata[4][j] = dtm.getValueAt(172, j);
-                                for (int j=0; j < nCol; j++)
-                                    prototypedata[5][j] = dtm.getValueAt(168, j);
-                                for (int j=0; j < nCol; j++)
-                                    prototypedata[6][j] = dtm.getValueAt(167, j);
-                                for (int j=0; j < nCol; j++)
-                                    prototypedata[7][j] = dtm.getValueAt(230, j);
-                                int blockcount = 0;
-                                */
-                                
-                                
-                                
-                                //--------------------------------------------------------------------
+
                                 Hashtable messageinput = MessageParser.parse(input);
-                                if (messageinput.get("sender").equals(8007) && messageinput.get("commandName").equals("block")) //Zach is asking for block he's in
+                                
+                                //Here is where the message is decoded and responded to
+                                
+                                if (messageinput.get("sender").equals(8007) && messageinput.get("commandName").equals("block")) //Train Model is asking for next block
                                 { //Sample Message: "Train Model : 1 :get, block = get"
                                     int i = TrackModelGUI.currentTrainBlock;
                                     boolean currentblock = false;
                                     String[] parameters = new String[7];
-                                    while (currentblock = false)
+                                    if (i == 0) //If train is in yard
                                     {
-                                        if (tableData[i][2].equals(TrackModelGUI.trainposition[1]) && tableData[i][0].equals(TrackModelGUI.trainposition[0]))
+                                        
+                                    }
+                                    else
+                                    {
+                                        while (currentblock = false)
                                         {
-                                            TrackModelGUI.currentTrainBlock++;
-                                            parameters[0] = tableData[i][4].toString(); //gradient
-                                            parameters[1] = "green"; //beacon status
-                                            parameters[2] = "5"; //authority
-                                            parameters[3] = tableData[i][5].toString(); //speed limit
-                                            parameters[4] = tableData[i][3].toString(); //length
-                                            parameters[5] = "false"; //tunnel
-                                            parameters[6] = (Boolean.toString(tableData[i][2].equals(0))); //yard
-                                            MessageLibrary.sendMessage("localhost", 8007, "Track Model : " + 0 + " :set, Block=" + parameters);
-                                            currentblock = true;
+                                            if (tableData[i][2].equals(TrackModelGUI.trainposition[1]) && tableData[i][0].equals(TrackModelGUI.trainposition[0]))
+                                            {
+                                                TrackModelGUI.currentTrainBlock++;
+                                                i = TrackModelGUI.currentTrainBlock;
+                                                parameters[0] = tableData[i][4].toString(); //gradient
+                                                parameters[1] = tableData[i][12].toString(); //beacon status
+                                                parameters[2] = "5"; //authority
+                                                parameters[3] = tableData[i][5].toString(); //speed limit
+                                                parameters[4] = tableData[i][3].toString(); //length
+                                                if (tableData[i][6].toString().contains("UNDERGROUND")) //tunnel presence
+                                                    parameters[5] = "TRUE";
+                                                else
+                                                    parameters[5] = "FALSE";
+                                                parameters[6] = (Boolean.toString(tableData[i][2].equals(0))); //yard
+                                                MessageLibrary.sendMessage("localhost", 8007, "Track Model : " + 0 + " :set, Block=" + parameters);
+                                                TrackModelGUI.trainposition[0] = tableData[i][0];
+                                                TrackModelGUI.trainposition[1] = tableData[i][2];
+                                                currentblock = true;
+                                            }
                                         }
                                     }
-                                    /*
-                                    //FOR PROTOTYPE PURPOSES ONLY
-                                    //--------------------------------------------------------------------
-                                        parameters[0] = prototypedata[blockcount][4].toString(); //gradient
-                                        parameters[1] = "green"; //beacon status
-                                        parameters[2] = "5"; //authority
-                                        parameters[3] = prototypedata[blockcount][5].toString(); //speed limit
-                                        parameters[4] = prototypedata[blockcount][3].toString(); //length
-                                        parameters[5] = "false"; //tunnel
-                                        parameters[6] = (Boolean.toString(prototypedata[blockcount][2].equals(0))); //yard
-                                        MessageLibrary.sendMessage("localhost", 8007, "Track Model : " + 0 + " :set, Block=" + parameters);
-                                        blockcount++;
-                                    */
-                                    //--------------------------------------------------------------------
-                                    //Give him next block and update my knowledge of his position
                                 }
                                 else if (messageinput.get("sender").equals(8007) && messageinput.get("commandName").equals("Passengers")) //Zach is asking for passengers to swap between us
                                 {
-                                    //Take his passengers and make them disappear
-                                    
                                     //Hand him a random number of passengers
                                     Random randomGenerator = new Random();
                                     int passengers = randomGenerator.nextInt(50);
                                     MessageLibrary.sendMessage("localhost", 8007, "Track Model : " + 0 + " :set, Passengers=" + passengers);
                                     
-                                    //Make sure to take back some passengers if he's full
+                                    //Wait in case he sends back passengers
+                                    try {
+                                        Thread.sleep(5000); //1000 milliseconds is one second.
+                                    } catch(InterruptedException ex) {
+                                        Thread.currentThread().interrupt();
+                                    }
                                 }
                                 /*else if () //Shalin is asking for switch locations, Zach's locations, speed limit, or accessible blocks
                                 {
