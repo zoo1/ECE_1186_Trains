@@ -59,7 +59,7 @@ public class Train extends Thread {
 
     public void setSigFail(boolean sigFail) {
         this.sigFail = sigFail;
-        MessageLibrary.sendMessage("localhost", TRAINCONTROLLER, "Train Model : " + UID + " :set, SignalFail=" + brakeFail);
+        MessageLibrary.sendMessage("localhost", TRAINCONTROLLER, "Train Model : " + UID + " :set, SignalFail=" + sigFail);
     }
 
     public boolean isBrakeFail() {
