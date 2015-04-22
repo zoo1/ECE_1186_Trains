@@ -128,7 +128,8 @@ public class WebServer {
                     Block b = Block.createblock(gradient, beaconString, authority, speedLimit, length, tunnel, yard); //Create Block and append to train
                     if(b!=null)
                     {
-                        MessageLibrary.sendMessage("localhost", TRAINCONTROLLER, "Track Model : 1 : set, Gradient="+ gradient+", Beacon String=" + beaconString + ", Authority=" + authority + ", Speed Limit=" + speedLimit + ", Length=" + length + ", Tunnel=" + tunnel + ", Yard=" + yard);
+                        if(!trains.get(TrainUID).isSigFail())
+                            MessageLibrary.sendMessage("localhost", TRAINCONTROLLER, "Track Model : 1 : set, Gradient="+ gradient+", Beacon String=" + beaconString + ", Authority=" + authority + ", Speed Limit=" + speedLimit + ", Length=" + length + ", Tunnel=" + tunnel + ", Yard=" + yard);
                         trains.get(TrainUID).updateBlock(b);
                     }
                     else
