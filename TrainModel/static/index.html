@@ -40,6 +40,8 @@ function UpdateTrainData()
 
   xmlHttp = new XMLHttpRequest();
   var e = document.getElementById("AvailTrains");
+  if(e.options[e.selectedIndex] == undefined)
+    return;
   var strUser = e.options[e.selectedIndex].value;
   xmlHttp.open( "GET", "/handlers/"+strUser, true );
   xmlHttp.onload = function (e) {
@@ -101,7 +103,7 @@ function UpdateTrainData()
 function GetTrains()
 {
   var xmlHttp = null;
-
+  var selected = document.getElementById("AvailTrains").selectedIndex;
   xmlHttp = new XMLHttpRequest();
   xmlHttp.open( "GET", "/handlers/Trains", true );
   xmlHttp.onload = function (e) {
@@ -130,6 +132,7 @@ function GetTrains()
               avail.innerHTML=avail.innerHTML+"<option value=\""+ids[i]+"\">Train "+ids[i]+"</option>";
           }
           disablePage(false);
+          document.getElementById("AvailTrains").selectedIndex = selected;
 }
 } else {
   console.error(xmlHttp.statusText);
