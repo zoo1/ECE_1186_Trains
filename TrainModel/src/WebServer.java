@@ -94,7 +94,6 @@ public class WebServer {
                     int authority=-1, length=-99999;
                     for(int i = 1; i < splitbody.length; i++) {
                         String[] line = splitbody[i].split("=");
-                        System.out.println(line[0]);
                         if(line[0].contains("TMSS"))
                         {
                             speedLimit=Double.valueOf(line[1]);
@@ -129,6 +128,7 @@ public class WebServer {
                     Block b = Block.createblock(gradient, beaconString, authority, speedLimit, length, tunnel, yard); //Create Block and append to train
                     if(b!=null)
                     {
+                        MessageLibrary.sendMessage("localhost", TRAINCONTROLLER, "Track Model : 1 : set, Gradient="+ gradient+", Beacon String=" + beaconString + ", Authority=" + authority + ", Speed Limit=" + speedLimit + ", Length=" + length + ", Tunnel=" + tunnel + ", Yard=" + yard);
                         trains.get(TrainUID).updateBlock(b);
                     }
                     else
