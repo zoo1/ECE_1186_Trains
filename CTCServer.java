@@ -85,7 +85,7 @@ public class CTCServer {
 					message = message.replaceAll("/rbracket/", "]");
 					MessageLibrary.httpAcknowledge(exchange);
 					System.out.println("Sending to Track Controller: " + message);
-					// MessageLibrary.sendMessage(8003, message); // UNCOMMENT THIS
+					MessageLibrary.sendMessage("localhost", 8003, message); // UNCOMMENT THIS
 					break;
 				case "send_all":
 					MessageLibrary.httpAcknowledge(exchange);
@@ -96,7 +96,7 @@ public class CTCServer {
 					timeMessage = timeMessage.replaceAll("/lbracket/", "[");
 					timeMessage = timeMessage.replaceAll("/rbracket/", "]");
 					System.out.println("Sending to All: " + timeMessage);
-					// MessageLibrary.sendMessage(8003, timeMessage); // UNCOMMENT THIS
+					MessageLibrary.sendMessage("localhost", 8003, timeMessage); // UNCOMMENT THIS
 					// MessageLibrary.sendMessage(8005, timeMessage); // UNCOMMENT THIS
 					// MessageLibrary.sendMessage(8007, timeMessage); // UNCOMMENT THIS
 					// MessageLibrary.sendMessage(8009, timeMessage); // UNCOMMENT THIS
@@ -117,7 +117,7 @@ public class CTCServer {
 		public void run() {
 			while (true) {
 				try (
-					ServerSocket serverSocket =	new ServerSocket(socketListenerNumber, 0, InetAddress.getByName(null));
+					ServerSocket serverSocket =	new ServerSocket(socketListenerNumber); // , 0, InetAddress.getByName(null));
 					Socket clientSocket = serverSocket.accept();     
 					BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 					PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
@@ -128,6 +128,7 @@ public class CTCServer {
 					while ((inputLine = in.readLine()) != null) {
 						completeInput.append(inputLine);
 					}
+					System.out.println("Receiving from " + completeInput.toString());
 					// Message input complete.  Append the message to the list.
 					String JSONMessage = messageToJSON(completeInput.toString());
 					if (!JSONMessage.equals("Protocol error")) {					

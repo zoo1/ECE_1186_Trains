@@ -24,6 +24,7 @@
 				<li><a href="#" onclick="showModule('TrackStatus')">Track Status</a></li>
 				<li><a href="#" onclick="showModule('CrossingSwitches')">Crossings and Switches</a></li>
 				<li><a href="#" onclick="showModule('TrainInfo')">Trains And Scheduling</a></li>
+				<li><a type="button" data-toggle="modal" data-target="#MetricsModal" href="#">Metrics</a></li>
 			</ul>
 		</div>
 	</nav>
@@ -89,6 +90,40 @@
 				</div>
 			</div>
 		</div>
+		
+		<div class="modal fade" id="MetricsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title">Throughput Metrics</h4>
+					</div>
+					<div class="modal-body">
+						<table class="table">
+							<thead>
+								<tr>
+									<th>Station</th>
+									<th>Block</th>
+									<th>Line</th>
+									<th title="Trains Since Execution">Throughput</th>
+								</tr>
+							</thead>
+							<tbody data-bind="foreach: trainsDataModel.stationsList">
+								<tr class="unselectable" data-bind="if: (Name != 'Block')">
+									<td data-bind="text: Name"></td>
+									<td data-bind="text: Block"></td>
+									<td data-bind="text: Line"></td>
+									<td title="Trains Since Execution" data-bind="text: Throughput"></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 	
 	<div id="main-container" class="flex row grow">
@@ -143,7 +178,7 @@
 						</tr>
 						<tr>
 							<td>Length</td>
-							<td><span data-bind="text: Block_Length * 3.28084"></span></td>
+							<td><span data-bind="text: Block_Length * 3.28084"></span> Feet</td>
 						</tr>
 						<tr>
 							<td>Grade</td>

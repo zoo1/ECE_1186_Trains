@@ -9,7 +9,7 @@ public class MessageTester {
 			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 			try {
 				message = br.readLine();
-				MessageLibrary.sendMessage(8001, message);
+				MessageLibrary.sendMessage(args[0], Integer.parseInt(args[1]), message);
 			}
 			catch (Exception e) {}				
 		}
