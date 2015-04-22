@@ -1,4 +1,3 @@
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -38,6 +37,7 @@ class SocketListener extends Thread {
                                 
                                 //FOR PROTOTYPE PURPOSES ONLY
                                 //--------------------------------------------------------------------
+                                /*
                                 Object[][] prototypedata = new Object[8][nCol];
                                 for (int j=0; j < nCol; j++)
                                     prototypedata[0][j] = dtm.getValueAt(230, j);
@@ -56,21 +56,22 @@ class SocketListener extends Thread {
                                 for (int j=0; j < nCol; j++)
                                     prototypedata[7][j] = dtm.getValueAt(230, j);
                                 int blockcount = 0;
+                                */
                                 
                                 
                                 
                                 //--------------------------------------------------------------------
                                 Hashtable messageinput = MessageParser.parse(input);
-                                if (messageinput.get("sender").equals(8007) && messageinput.get("commandValue").equals("block")) //Zach is asking for block he's in
-                                {
-                                    /*int i = 0;
-                                    boolean currentblock = false;*/
+                                if (messageinput.get("sender").equals(8007) && messageinput.get("commandName").equals("block")) //Zach is asking for block he's in
+                                { //Sample Message: "Train Model : 1 :get, block = get"
+                                    int i = TrackModelGUI.currentTrainBlock;
+                                    boolean currentblock = false;
                                     String[] parameters = new String[7];
-                                    /*while (currentblock = false)
+                                    while (currentblock = false)
                                     {
                                         if (tableData[i][2].equals(TrackModelGUI.trainposition[1]) && tableData[i][0].equals(TrackModelGUI.trainposition[0]))
                                         {
-                                            i++;
+                                            TrackModelGUI.currentTrainBlock++;
                                             parameters[0] = tableData[i][4].toString(); //gradient
                                             parameters[1] = "green"; //beacon status
                                             parameters[2] = "5"; //authority
@@ -81,9 +82,8 @@ class SocketListener extends Thread {
                                             MessageLibrary.sendMessage("localhost", 8007, "Track Model : " + 0 + " :set, Block=" + parameters);
                                             currentblock = true;
                                         }
-                                        i++;
-                                    }*/
-                                    
+                                    }
+                                    /*
                                     //FOR PROTOTYPE PURPOSES ONLY
                                     //--------------------------------------------------------------------
                                         parameters[0] = prototypedata[blockcount][4].toString(); //gradient
@@ -95,10 +95,11 @@ class SocketListener extends Thread {
                                         parameters[6] = (Boolean.toString(prototypedata[blockcount][2].equals(0))); //yard
                                         MessageLibrary.sendMessage("localhost", 8007, "Track Model : " + 0 + " :set, Block=" + parameters);
                                         blockcount++;
+                                    */
                                     //--------------------------------------------------------------------
                                     //Give him next block and update my knowledge of his position
                                 }
-                                else if (messageinput.get("sender").equals(8007) && messageinput.get("commandValue").equals("Passengers")) //Zach is asking for passengers to swap between us
+                                else if (messageinput.get("sender").equals(8007) && messageinput.get("commandName").equals("Passengers")) //Zach is asking for passengers to swap between us
                                 {
                                     //Take his passengers and make them disappear
                                     
@@ -121,6 +122,10 @@ class SocketListener extends Thread {
                                 {
                                     //Update table
                                 }*/
+                                else
+                                {
+                                    System.out.println("Message not recognized.");
+                                }
 			} catch (IOException e) {
 				System.out.println("Track Model: Port listening exception on port " + 8005 + ".");
 				System.out.println(e.getMessage());
