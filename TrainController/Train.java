@@ -41,6 +41,7 @@ public class Train
          position = 0.0;
          acceleration = 0;
          authority = 0;
+         lights = false;
       }
    public void setPos(double po)
       {
@@ -72,6 +73,17 @@ public class Train
          return currentPower;
       } 
    
+   
+   public boolean getLights()
+      {
+         return lights;
+      }
+   public void setLights(boolean newLights)
+      {
+         lights = newLights;
+      }
+   
+   
    public BeaconInfo getBeacon()                      //Returns this train's current BeaconInfo object
       {
          return beacon;
@@ -87,7 +99,7 @@ public class Train
          return setPointVelocity;
       }
    
-   public void setSPV(int setPoint)       //sets the set Point Velocity and moves the train into Manual Mode
+   public void setSPV(double setPoint)       //sets the set Point Velocity and moves the train into Manual Mode
       {
          automatic = false;
          setPointVelocity = setPoint;
@@ -186,7 +198,7 @@ public class Train
                rightdoor = true;
             }
          //System.out.println("Train Controller: " + id + " : LeftDoor = " + leftdoor + ", RightDoor = " + rightdoor);
-         //MessageLibrary.sendMessage("localhost",8007,"Train Controller: " + id + " : LeftDoor = " + leftdoor + ", RightDoor = " + rightdoor);
+         MessageLibrary.sendMessage("localhost",8007,"Train Controller: " + id + " : Left Door = " + leftdoor + ", Right Door = " + rightdoor);
      }
      public void setServiceBrake(boolean brake)
       {
@@ -237,7 +249,7 @@ public class Train
 
     public void calculateStopping()
       {
-         stoppingDis = Math.pow((((double)this.getCurrentSpeed())*.27777), 2)/(2.4);
+         stoppingDis = Math.pow((((double)this.getSpeed())*.27777), 2)/(2.4);
       }
    public double getStopping()   
       {

@@ -10,7 +10,7 @@ public class TrainControllerGUI extends javax.swing.JFrame {
     public double currentPower = 0.0;
     public int numberOfPassengers = 0;
     public int recSpeed;
-    public Train train = new Train(106);
+    public Train tempt = new Train(106);
     public int length;
     //public TrainController tc = new TrainController();
     public double power = 0;
@@ -327,6 +327,7 @@ public class TrainControllerGUI extends javax.swing.JFrame {
     
     public void update(Train train)
       {
+         tempt = train;
             //System.out.println("Actual Speed = " + train.getSpeed());
          //actual speed
          //actualSpeed.setText(train.getSpeed() + " km/hr");        
@@ -335,7 +336,7 @@ public class TrainControllerGUI extends javax.swing.JFrame {
          trainID.setText(train.getID()+ "");
          //speedlimit
             //System.out.println("Speed Limit = " + train.getSpeedLimit());
-         speedLimitLabel.setText("Speed Limit: "+ train.getSpeedLimit());
+         speedLimitLabel.setText("Speed Limit: "+ (int)((train.getSpeedLimit())*2.23694) + " mph");
          //CurrentPower
             //System.out.println("Current Power = " + train.getPower());   
          powerChange.setText(train.getTargetPower() + " Watts");
@@ -344,12 +345,12 @@ public class TrainControllerGUI extends javax.swing.JFrame {
          waysideSpeed.setText((train.getAuthority()-train.getPos()) + "m");
          
          //current Speed
-         actualSpeed.setText(train.getSpeed() + "km/hr");
+         actualSpeed.setText((int)(train.getSpeed()*2.23694) + " mph");
          //Update Announcement
          if((train.getAuthority() - train.getPos()) <= train.getStopping() && train.getAuthority() != 0 && train.getPos() != 0)
             Announcement.setText("We will be arriving at " + train.getBeacon().getStationName() + " shortly!");
-         else
-            Announcement.setText("");
+         //else
+            //Announcement.setText("");
       }
     
     public void updatePower(double power)
@@ -362,39 +363,53 @@ public class TrainControllerGUI extends javax.swing.JFrame {
     
     private void convertButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_convertButtonActionPerformed
 
-               
-        double numPassengers = Double.parseDouble(passengerTextField.getText()); 
+        double speedLim;      
+        //double numPassengers = Double.parseDouble(passengerTextField.getText()); 
         //double power; 
-        //tc.changeNumPassengers((int)Double.parseDouble(passengerTextField.getText()), train);
-        passengersOnTrain.setText(train.getPassengers() + "");    
+        //tc.changeNumPassengers((tempt.getPassengers() + "");    
         
         
         if(leftDoors.isSelected() == true)
             {
-               train.setDoors(1);
+               tempt.setDoors(1);
             }
             
         if(rightDoors.isSelected() == true)
             {
                if (leftDoors.isSelected() == false)
-                  train.setDoors(2);
+                  tempt.setDoors(2);
                else
-                  train.setDoors(3);
+                  tempt.setDoors(3);
             }
         if(leftDoors.isSelected() == false && rightDoors.isSelected() == false)
             {
-               train.setDoors(0);
+               tempt.setDoors(0);
             }    
          
         System.out.println(setpointTextField.getText());
-        train.setSPV((int)Double.parseDouble(setpointTextField.getText()));    
         
-        actualSpeed.setText(train.getSpeed() + " km/hr");
+        speedLim = Double.parseDouble(setpointTextField.getText())*0.44704;
+        if(speedLim <= tempt.getSpeedLimit())
+            tempt.setSPV(Double.parseDouble(setpointTextField.getText())*0.44704);  
+        else
+            tempt.setSPV(tempt.getSpeedLimit());
+        
+        if(lightsOn.isSelected() == true)
+            {
+               tempt.setLights(true);
+               Announcement.setText("Lights are on");
+            }
+        else
+            {
+               tempt.setLights(false);
+               Announcement.setText("Lights are off");
+        }
+        //actualSpeed.setText(train.getSpeed() + " km/hr");
         
         //power = power + t.getPowerChange(train);
         //if (power <0)
         //    power = 0;
-        currPower.setText(power + " Watts");
+        //currPower.setText(power + " Watts");
         //powerChange.setText(tc.getPowerChange(train) + "");
         //if((int)Double.parseDouble(setpointTextField.getText()) <= speedLimit)
           //  {
@@ -404,6 +419,9 @@ public class TrainControllerGUI extends javax.swing.JFrame {
                //powerChange.setText(power - currentPower + " Watts");
             //   currentPower = power;
            // }
+           
+       ///////////////BRAKES///////////    
+       /*    
         train.setBrakes(powerSafe.isSelected());
         passengerTextField.setText(0 + "");
         train.setBrakes(manualBrake.isSelected());
@@ -411,7 +429,7 @@ public class TrainControllerGUI extends javax.swing.JFrame {
             power = 0;
             
         recSpeed = (int)(Math.random()*60);
-        waysideSpeed.setText(recSpeed + " km/hr");
+        waysideSpeed.setText(recSpeed + " km/hr");*/
         //if(manualBrake.isSelected() == true)
           //  {
                //tc.setBrake(manualBrake.isSelected(), train);

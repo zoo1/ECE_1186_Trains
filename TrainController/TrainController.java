@@ -94,7 +94,7 @@ public class TrainController {
          //gui = new TrainControllerGUI(id); 
          System.out.println("Train " + id + " created");
          printtrainList();
-         if(trainList.size() == 1)
+         ///if(trainList.size() == 1)
             gui.update(train);
          
       }
@@ -109,10 +109,42 @@ public class TrainController {
          //System.out.println("INSIDE REGULATESPEED");
          double power = 0;
          Train temp = getTrain(id);
-         temp.setSpeed(actualSpeed*3.6);
+         temp.setSpeed(actualSpeed);
+         temp.calculateStopping();
          //recalculate stopping distance for new speed
          
-         if(temp.getAcceleration() == 0 && temp.getSpeed() == 0 && temp.getAuthority() >0 && temp.getSpeedLimit() > 0)
+         if (temp.getSpeed() == 0 && temp.getAuthority() >0 && temp.getServiceBrake() == true && temp.getPos() - temp.getAuthority() <= 0) //stopped at a station
+            {
+               this.dwell(temp);
+            }  
+         if(temp.getServiceBrake() == true && temp.getSpeed() == 0 && temp.getAuthority() - temp.getPos() > temp.getStopping() && temp.getEmergencyBrake() == false) 
+         {
+            temp.setServiceBrake(true);
+            MessageLibrary.sendMessage("localhost",8007,"Train Controller: " + id + " : set,  Brake = none");
+         }
+         
+         if(temp.getEmergencyBrake() == true)
+            {
+               MessageLibrary.sendMessage("localhost",8007,"Train Controller: " + id + ": set, Power = " + 0);
+            }  
+         
+         //if our speed is greater than speed limit (following SPV but then new block info gives a lower speed Limit)
+         if (temp.getSpeed() > temp.getSpeedLimit()) //above speed limit and not in stop
+            {
+               temp.setServiceBrake(true);   //set the service brake
+               temp.setAcceleration(-1.2);   //set acceleration to service brake
+               MessageLibrary.sendMessage("localhost",8007,"Train Controller: " + id + " : set,  Brake = service");
+            }
+         else if(temp.getSpeed() == temp.getSpeedLimit() && temp.getServiceBrake() == true && temp.getAuthority() - temp.getPos() > temp.getStopping())   
+            {
+               //at speed limit and service brake is on
+               temp.setServiceBrake(false);
+               MessageLibrary.sendMessage("localhost",8007,"Train Controller: " + id + " : set,  Brake = none");
+               power = ComputePower(temp);
+               temp.setPower(power);
+               MessageLibrary.sendMessage("localhost",8007,"Train Controller: " + id + " : set, Power = " + power);
+            }
+         if(temp.getAcceleration() == 0 && temp.getSpeed() == 0 && temp.getAuthority() >0 && temp.getSPV() > 0)
             {
                System.out.println("Train is idle");
                //train is idle. We need to accelerate
@@ -156,7 +188,7 @@ public class TrainController {
                            MessageLibrary.sendMessage("localhost",8007,"Train Controller: " + id + ": set, Brakes = service");
                         }
                   }
-               else if (temp.getSpeed() == temp.getSpeedLimit())   //train is at speed limit
+               else if (temp.getSpeed() == temp.getSPV())   //train is at speed limit
                      {
                         System.out.println("1");
                         temp.setAcceleration(0);
@@ -196,7 +228,7 @@ public class TrainController {
    public double ComputePower(Train temp){
 		if(temp.getServiceBrake() == true || temp.getEmergencyBrake() == true) 
          return 0;
-		ek = temp.getSpeedLimit() - temp.getSpeed();
+		ek = temp.getSPV() - temp.getSpeed();
 		uk = uk_prev + 0.005 * (ek + ek_prev);
 		maxPower = (0.5*(ek) + 0.8*(uk))*10000;
 		System.out.println("Target Power: " + maxPower);
@@ -231,7 +263,7 @@ public class TrainController {
        int idBegins = 10, idEnds = 11, id;
        string = string.replaceAll(" ", "");
        id = findID(string);
-       if(getTrain(id) == null && !(string.contains("Create")))
+       if(getTrain(id) == null && !(string.contains("Create")) && (string.contains("TrainModel")))
          createTrain(id);
        
          if (string.contains("CTC"))      //Any messages received directly from the CTC concern the time multiplier
@@ -263,9 +295,9 @@ public class TrainController {
             {
                this.speedLimit(id, string);    //jump to speed limit method
             }
-         if (string.contains("Lights"))
+         if (string.contains("Tunnel"))
             {
-               //this.lights(id, string);
+               this.tunnel(id, string);
             }//jump to lights method
          if (string.contains("BeaconString"))
             {
@@ -286,8 +318,104 @@ public class TrainController {
             {
                this.getPosition(id, string);
             }
-      
+         if (string.contains("BrakeFail"))
+            {
+               this.brakefail(id, string);
+            }
+         if (string.contains("SignalFail"))
+            {
+               this.signalfail(id, string);
+            }
+         if (string.contains("EngineFail"))
+            {
+               this.enginefail(id, string);
+            }
+         try{
+               Thread.sleep(1);  
+            } catch (InterruptedException ie) {
+                  System.out.println(ie);
+            } 
+              
+            
       }
+      
+      
+      public void tunnel(int id, String string)
+      {
+         String tunnel = findString("Tunnel", string);
+         Train temp = this.getTrain(id);
+         if (tunnel.equals("true")) //tunnel approaching, turn on lights
+            {
+               temp.setLights(true);
+               System.out.println("Train Controller:" + id + ": set, Lights = On"); 
+            }
+         else
+            {
+               temp.setLights(false);
+               System.out.println("Train Controller:" + id + ": set, Lights = Off"); 
+            }
+        
+      }
+      
+      
+      public void brakefail(int id, String string)
+      {
+         String fail= findString("BrakeFail", string);
+         Train temp = this.getTrain(id);
+         if (fail.equals("true"))
+            {
+               temp.setEmergencyBrake(true);
+               System.out.println("Train Controller:" + id + ": set, Brake = emergency");
+               temp.setAcceleration(2.73);
+            }
+         else
+            {
+               temp.setEmergencyBrake(false);
+               System.out.println("Train Controller:" + id + ": set, Brake = none");
+               temp.setAcceleration(0);
+            }
+         this.regulateSpeed(id, temp.getSpeed());
+            
+      }
+ 
+      public void signalfail(int id, String string)
+      {
+         String fail= findString("BrakeFail", string);
+         Train temp = this.getTrain(id);
+         if (fail.equals("true"))
+            {
+               temp.setEmergencyBrake(true);
+               System.out.println("Train Controller:" + id + ": set, Brake = emergency");
+               temp.setAcceleration(2.73);
+            }
+         else
+            {
+               temp.setEmergencyBrake(false);
+               System.out.println("Train Controller:" + id + ": set, Brake = none");
+               temp.setAcceleration(0);
+            }
+         this.regulateSpeed(id, temp.getSpeed());
+            
+      }     
+      public void enginefail(int id, String string)
+      {
+         String fail= findString("BrakeFail", string);
+         Train temp = this.getTrain(id);
+         if (fail.equals("true"))
+            {
+               temp.setEmergencyBrake(true);
+               System.out.println("Train Controller:" + id + ": set, Brake = emergency");
+               temp.setAcceleration(2.73);
+            }
+         else
+            {
+               temp.setEmergencyBrake(false);
+               System.out.println("Train Controller:" + id + ": set, Brake = none");
+               temp.setAcceleration(0);
+            }
+         this.regulateSpeed(id, temp.getSpeed());
+            
+      }      
       
       public int findID(String string)
       {
@@ -349,7 +477,10 @@ public class TrainController {
       public void getPosition(int i, String string)
       {
          double pos = findDouble("Position", string);
-         this.setPosition(i, pos);
+         Train temp = getTrain(i);
+         if(temp.getPos() < pos)  //if this message is newer
+            this.setPosition(i, pos);
+            
          
       }
          
@@ -388,6 +519,7 @@ public class TrainController {
                
                temp.getBeacon().update(tempBeac);
             }  
+            gui.update(temp);
              
   
       }         
@@ -498,11 +630,12 @@ public class TrainController {
          
       }
       
-      public void updateSpeedLimit(int id, int limit)
+      public void updateSpeedLimit(int id, double limit)
       {
          Train temp = this.getTrain(id);
-         //System.out.println("Hello: " + temp.getPos());
-         temp.setSpeedLimit(limit*3.6);
+         
+         temp.setSpeedLimit(limit); //speed Limit is in m/s
+         temp.setSPV(limit);
          this.regulateSpeed(id,temp.getSpeed());
             //gui.update(temp);
       }

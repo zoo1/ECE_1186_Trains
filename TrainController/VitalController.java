@@ -21,7 +21,7 @@ public class VitalController
          double power;
          double mass = 37103.9 + numPassengers*88;
          double acceleration = temp.getAcceleration();
-         double velocity = temp.getSpeedLimit();
+         double velocity = temp.getSPV();
          
          power = mass*acceleration*velocity*0.277;
       
