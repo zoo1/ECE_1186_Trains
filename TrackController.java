@@ -8,6 +8,7 @@ import org.json.simple.*;
 import org.json.simple.parser.JSONParser;
 
 public class TrackController {
+	
 	public double getSpeed(String message) {	//from ctc
 		return Double.parseDouble(message);
 	}
@@ -34,17 +35,50 @@ public class TrackController {
 		sendAuthority(guiAuthority);
 	}
 	
-	public void messageAuthority(double pathLength) {	
+	//send the speed to the track model
+	public void sendSpeedToTrack(String message) {	
+		String[] messageParts = message.replaceAll("\\s+","").toLowerCase().split(":");
+			if (messageParts[2].contains("set")) {
+				String[] setParts = messageParts[2].replace("set,", "").split("=");
+				String commandType = setParts[0];
+				String commandValue = setParts[1];
+				String subjectType = messageParts[1].replaceAll("[0-9]", ""); // Train, Red, or Green
+				String subjectID = messageParts[1].replaceAll("[^0-9]", ""); // The ID of the subject.  This is an integer.
+				String JSONMessage = "{'commandType':'" + commandType + "', 'commandValue':'" + commandValue + "', 'subjectType':'" + subjectType + "', 'subjectID':" + subjectID + "}";
+				JSONMessage = JSONMessage.replaceAll("'", "\"");
+				
+				MessageLibrary.sendMessage(8005, "Track Controller : "+subjectID+" : set, Speed = "+commandValue);
+			}
+		
 	}
 	
-	public String getTrainInfo(String[] messageParts) {		//id, path
+	//send the authority to the track model
+	public void sendAuthorityToTrack(String message) {
+		String[] messageParts = message.replaceAll("\\s+","").toLowerCase().split(":");
+		if (messageParts[2].contains("set")) {
+			String[] setParts = messageParts[2].replace("set,", "").split("=");
+			String commandType = setParts[0];
+			String commandValue = setParts[1];
+			String subjectType = messageParts[1].replaceAll("[0-9]", ""); // Train, Red, or Green
+			String subjectID = messageParts[1].replaceAll("[^0-9]", ""); // The ID of the subject.  This is an integer.
+			String JSONMessage = "{'commandType':'" + commandType + "', 'commandValue':'" + commandValue + "', 'subjectType':'" + subjectType + "', 'subjectID':" + subjectID + "}";
+			JSONMessage = JSONMessage.replaceAll("'", "\"");
+			
+			MessageLibrary.sendMessage(8005, "Track Controller : "+subjectID+" : set, Authority = "+commandValue);
+		}
+	}
+	
+	//getting the path, and line for other calculations
+	public String getTrainInfo(String message) {		//id, path
+		PLC sendPLC = new PLC();
+		
 		ArrayList<Integer> stopList = new ArrayList<Integer>();
 		ArrayList<Integer> dwellList = new ArrayList<Integer>();
-		//String line;
-		int j = 0;
 		
+		String[] messageParts = message.replaceAll("\\s+","").toLowerCase().split(":");
 		if (messageParts[0].equals("ctc")) {
 			if (messageParts[2].contains("set")) {
+				
 				String[] setParts = messageParts[2].replace("set,", "").split("=");
 				String commandType = setParts[0];
 				String commandValue = setParts[1];
@@ -59,26 +93,35 @@ public class TrackController {
 				if(commandType.equals("path")) {
 					String[] route = setParts[1].replace("[", "").replace("]", "").split(","); //also replace ] with space
 					//messageAuthority(route.length);
-					
 					for (int i = 0; i < route.length; i++) {
 						route[i].trim();
 						//System.out.println(route[i]);
 						if (route[i].charAt(0) == '{') {
-							route[i].split("/");
-							String stopString = route[i].replaceAll("[^0-9]", "");
+							//System.out.println(route[i]);
+							String [] blockDwell = route[i].split("/");
+							String stopString = blockDwell[0].replaceAll("[^0-9]", "");
 							stopList.add(Integer.parseInt(stopString));
-							String dwellString = route[i].replaceAll("[^0-9]", "");
+							//System.out.println(stopList);
+							String dwellString = blockDwell[1].replaceAll("[^0-9]", "");
 							dwellList.add(Integer.parseInt(dwellString));
-							//System.out.println(stopString);
 							//System.out.println(dwellString);
 						}
 					}
+					//System.out.println(stopList.get(0));
+					//System.out.println(dwellList);
 				}
 			}
 		}
 		return null;
 	}
 	
+	//the stop and its respective dwell time
+	public void getStopAndDwell(String stop, String dwell) {
+		int stopBlock = Integer.parseInt(stop);
+		int dwellTime = Integer.parseInt(dwell);
+	}
+	
+	//Setting the UI line text to its respective color
 	public void getLine(String message) {
 		if (message.equals("red")) {
 			tcGUI.uiElements.get("line").setText("R");
@@ -88,54 +131,17 @@ public class TrackController {
 		}
 	}
 	
-	public String getTrackOccupancy() {		//from train model
-		return null;
-	}
 	
-	public String sendTrackStatus(String message) {	//get the broken track yes or no and send to ctc
-		//MessageLibrary.sendMessage(8001, message);
-		return null;
-	}
-
-	public static String sendSwitchPosition() {	//to ctc
-		JSONParser parser = new JSONParser();
-		try {
-			Object obj = parser.parse(new FileReader("/Users/shalinpmodi/Desktop/Spring2015/TrackControl/src/src/Switches.json"));
-			JSONArray jsonArr = (JSONArray) obj;
-			for (int index = 0; index < jsonArr.size(); index++) {
-				org.json.simple.JSONObject switchObject = (org.json.simple.JSONObject) jsonArr.get(index);
-				System.out.println(switchObject.get("Name"));
-				System.out.println(switchObject.get("Line"));
-				System.out.println(switchObject.get("Block_Numbers"));
-			}
+	public void getTrackOccupancy(String blockNum, String commandValue, String subjectID) {		//from train model
+		MessageLibrary.sendMessage(8001, "Track Controller : Train "+subjectID+" : set, Location = "+blockNum);
+		tcGUI.uiElements.get("blocknum").setText(blockNum);
+		if (commandValue.equals("true")) {
+			tcGUI.uiElements.get("occupancy").setText("Y");
 		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		return null;
-	}
-	
-	public String sendCrossBar() {		//to ctc
-		return null;
 	}
 
-	
-
+	//Load the plc program after the button is pressed on the UI
 	public static void loadPLC() {
-		PLC load = new PLC();
-		load.verifyPLC();
+		new PLC();
 	}
-	
-	/*public String sendToTrackMod() {	//speed, authority, lights
-		return null;
-	}
-	
-	public String sendLightStat() {		//to ctc
-		return null;
-	}
-	
-	public String getBlock() {
-		return null;
-	}*/
 }
