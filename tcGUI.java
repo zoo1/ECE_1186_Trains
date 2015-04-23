@@ -1,4 +1,22 @@
 import java.awt.EventQueue;
+import java.awt.BorderLayout;
+
+import javax.swing.*;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.Font;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.io.FileReader;
+import java.util.*;
+
+//import org.json.simple.*;
+//import org.json.JSONObject;
+import org.json.simple.parser.*;
+//import org.json.simple.JSONArray;
+//import org.json.simple.parser.JSONParser;
 
 
 public class tcGUI {
@@ -56,6 +74,10 @@ public class tcGUI {
 	private JLabel label;
 	private JPanel panel_5;
 	private JButton btnLoadPlc;
+	private JPanel panel_17;
+	private JButton btnKeepSuggestedData;
+	private JLabel lblBlockNumber;
+	private JTextField txtInt;
 
 	/**
 	 * Launch the application.
@@ -69,15 +91,6 @@ public class tcGUI {
 					window.frame.setVisible(true);
 					SocketListener listener = new SocketListener();
 					listener.start();
-					
-					Object obj = parser.parse(new FileReader("/Users/shalinpmodi/Desktop/Spring2015/TrackControl/src/src/Switches.json"));
-					/*JSONArray jsonArr = (JSONArray) obj;
-					for (int index = 0; index < jsonArr.size(); index++) {
-						org.json.simple.JSONObject switchObject = (org.json.simple.JSONObject) jsonArr.get(index);
-						System.out.println(switchObject.get("Name"));
-						System.out.println(switchObject.get("Line"));
-						System.out.println(switchObject.get("Block_Numbers"));
-					}*/
 					
 					//TrackController.sendSwitchPosition();
 					//MessageLibrary.sendMessage(8003, "CTC : 0 : set, Path = [{0/80}, 1, 2, 3, {4/20}, 5, 6]");
@@ -100,7 +113,7 @@ public class tcGUI {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 544, 271);
+		frame.setBounds(100, 100, 613, 399);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setTitle("Track Controller UI");
 		
@@ -184,27 +197,15 @@ public class tcGUI {
 		});
 		btnSubmit.setEnabled(true);
 		
-		
-		/*JPanel panel_87 = new JPanel();
-		panel.add(panel_87);
-		
-		lblBrokenRail = new JLabel("Broken Rail?");
-		panel_87.add(lblBrokenRail);
-		
-		txtYesOrNo = new JTextField();
-		txtYesOrNo.setHorizontalAlignment(SwingConstants.CENTER);
-		txtYesOrNo.setText("Y/N");
-		txtYesOrNo.setColumns(3);
-		panel_87.add(txtYesOrNo);*/
+		panel_17 = new JPanel();
+		panel_2.add(panel_17);
 		
 			
 		panel_3 = new JPanel();
-		panel_2.add(panel_3);
+		panel_17.add(panel_3);
 		
 		lblCommandedAuthority = new JLabel("Suggested Authority");
 		panel_3.add(lblCommandedAuthority);
-		
-		//String sugAuthority = (TrackController.getSpeed()).toString();
 		
 		textField_1 = new JTextField();
 		uiElements.put("authority", textField_1);
@@ -213,7 +214,7 @@ public class tcGUI {
 		panel_3.add(textField_1);
 		
 		panel_1 = new JPanel();
-		panel_2.add(panel_1);
+		panel_17.add(panel_1);
 		
 		lblSuggestedSpeed = new JLabel("Suggested Speed");
 		panel_1.add(lblSuggestedSpeed);
@@ -226,27 +227,19 @@ public class tcGUI {
 		lblKmhr = new JLabel("mph");
 		panel_1.add(lblKmhr);
 		
-		/*panel_10 = new JPanel();
+		panel_10 = new JPanel();
 		panel_2.add(panel_10);
 		
 		lblSwitchPositiion = new JLabel("Switch Position");
 		panel_10.add(lblSwitchPositiion);
 		
 		txtSwitchNumber = new JTextField();
-		txtSwitchNumber.setText("Switch Number");
+		txtSwitchNumber.setText("Blocks Connected");
 		uiElements.put("switchnum", txtSwitchNumber);
 		txtSwitchNumber.setHorizontalAlignment(SwingConstants.CENTER);
 		txtSwitchNumber.setEditable(false);
-		txtSwitchNumber.setColumns(8);
+		txtSwitchNumber.setColumns(10);
 		panel_10.add(txtSwitchNumber);
-		
-		txtOpenclose = new JTextField();
-		txtOpenclose.setText("Open/Close");
-		uiElements.put("swtichOC", txtOpenclose);
-		txtOpenclose.setHorizontalAlignment(SwingConstants.CENTER);
-		txtOpenclose.setEditable(false);
-		txtOpenclose.setColumns(7);
-		panel_10.add(txtOpenclose);*/
 		
 		panel_6 = new JPanel();
 		panel_2.add(panel_6);
@@ -261,19 +254,6 @@ public class tcGUI {
 		txtROrG.setColumns(2);
 		panel_6.add(txtROrG);
 				
-		/*panel_9 = new JPanel();
-		panel_2.add(panel_9);
-			
-		lblTrackOccupancy = new JLabel("Track Occupancy");
-		panel_9.add(lblTrackOccupancy);
-				
-		txtYn = new JTextField();
-		txtYn.setText("Y/N");
-		txtYn.setHorizontalAlignment(SwingConstants.CENTER);
-		txtYn.setEditable(false);
-		txtYn.setColumns(3);
-		panel_9.add(txtYn);*/
-				
 		panel_11 = new JPanel();
 		panel_2.add(panel_11);
 				
@@ -281,20 +261,36 @@ public class tcGUI {
 		panel_11.add(lblLights);
 				
 		txtROrG_1 = new JTextField();
-		txtROrG_1.setText("R/G");
 		uiElements.put("lights", txtROrG_1);
 		uiElements.get("lights").setText("G");
 		txtROrG_1.setHorizontalAlignment(SwingConstants.CENTER);
 		txtROrG_1.setEditable(false);
 		txtROrG_1.setColumns(2);
 		panel_11.add(txtROrG_1);
+		
+		panel_9 = new JPanel();
+		panel_2.add(panel_9);
+		
+		lblTrackOccupancy = new JLabel("Track Occupancy");
+		panel_9.add(lblTrackOccupancy);
+		
+		txtYn = new JTextField();
+		uiElements.put("occupancy", txtYn);
+		txtYn.setText("Y/N");
+		txtYn.setHorizontalAlignment(SwingConstants.CENTER);
+		txtYn.setEditable(false);
+		txtYn.setColumns(3);
+		panel_9.add(txtYn);
+		
+		lblBlockNumber = new JLabel("Block Number");
+		panel_9.add(lblBlockNumber);
+		txtInt = new JTextField();
+		uiElements.put("blocknum", txtInt);
+		txtInt.setText("Int");
+		panel_9.add(txtInt);
+		txtInt.setColumns(3);
 				
-		//if (txtROrG_1.getText() == "R" || txtROrG_1.getText() == "Red" || txtROrG_1.getText() == "red" || txtROrG_1.getText() == "r")
-		//{
-			//Set Up swithcing conditions
-		//}
-				
-		/*panel_12 = new JPanel();
+		panel_12 = new JPanel();
 		panel_2.add(panel_12);
 				
 		lblRrCrossing = new JLabel("RR Crossing?");
@@ -302,7 +298,6 @@ public class tcGUI {
 				
 		txtYn_1 = new JTextField();
 		uiElements.put("crossing", txtYn_1);
-		txtYn_1.setText("Y/N");
 		txtYn_1.setEditable(false);
 		txtYn_1.setColumns(3);
 		panel_12.add(txtYn_1);
@@ -314,15 +309,12 @@ public class tcGUI {
 		panel_13.add(lblCrossbar);
 				
 		txtUpdown = new JTextField();
-		//if (txtYn_1.getText() == "Y" || txtYn_1.getText() == "y" || txtYn_1.getText() == "Yes" || txtYn_1.getText() == "yes") {
-			//txtUpdown.setText("Down");
-		//}
-		txtUpdown.setText("Up/Down");
+		txtUpdown.setText("U/D");
 		uiElements.put("barUD", txtUpdown);
 		txtUpdown.setHorizontalAlignment(SwingConstants.CENTER);
 		txtUpdown.setEditable(false);
 		txtUpdown.setColumns(5);
-		panel_13.add(txtUpdown);*/
+		panel_13.add(txtUpdown);
 		
 		panel_5 = new JPanel();
 		panel_2.add(panel_5);
