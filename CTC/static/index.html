@@ -1,0 +1,403 @@
+<!-- CTC Client HTML: Version 4.0 -->
+
+<html>
+<head>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/static/lib/structure.css">
+	<link rel="stylesheet" href="/static/lib/timepicker.css">
+	<link rel="stylesheet" href="index.css">
+</head>
+<body>
+	<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+	<script src="/static/lib/timepicker.js"></script>
+	<script src="/static/lib/knockout-3.3.0.js"></script>
+	<script src="/static/index.js"></script>
+	<nav id="navbar" class="navbar navbar-default" style="margin: 0px">
+		<div class="container">
+			<a class="navbar-brand btn" type="button" data-toggle="modal" data-target="#ExecuteModal" href="#">Current Time: 
+				<span data-bind="text: TimeString"></span>
+			</a>
+			<span id="simulation-buttons" style="display: none" class="navbar-brand">
+				<span class="glyphicon glyphicon-play icon-padding" aria-hidden="true" onclick="continueTime()"></span>
+				<span class="glyphicon glyphicon-pause icon-padding" aria-hidden="true" onclick="pauseTime()"></span>
+			</span>
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="#" onclick="showModule('TrackStatus')">Track Status</a></li>
+				<li><a href="#" onclick="showModule('CrossingSwitches')">Crossings and Switches</a></li>
+				<li><a href="#" onclick="showModule('TrainInfo')">Trains And Scheduling</a></li>
+				<li><a type="button" data-toggle="modal" data-target="#MetricsModal" href="#">Metrics</a></li>
+			</ul>
+		</div>
+	</nav>
+	
+	<div id="modals-container">
+		<!-- Import Modal -->
+		<div class="modal fade" id="ImportModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">Import Schedule</h4>
+				</div>
+				<div class="modal-body">
+					<textarea style="width: 100%" id="import-text" rows="10" cols="50"></textarea>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button onclick="importSchedule()" type="button" class="btn btn-primary">Import</button>
+				</div>
+				</div>
+			</div>
+		</div>
+		
+		<!-- Export Modal -->
+		<div class="modal fade" id="ExportModal" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">Export Schedule</h4>
+				</div>
+				<div id="export-modal-body" class="modal-body">
+					<textarea style="width: 100%" id="export-text" rows="10" cols="50"></textarea>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+				</div>
+			</div>
+		</div>
+		
+		<!-- Execute Modal -->
+		<div class="modal fade" id="ExecuteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">Execute Settings</h4>
+				</div>
+				<div id="export-modal-body" class="modal-body">
+					<div style="padding-bottom: 8px">
+						Select a start time: <input id="execution-start-time" type="text" style="" data-time-format="H:i" />
+					</div>
+					<div>
+						Enter a time rate modifier: <input id="time-rate-modifier" data-bind="value: timeModifier" type="number">
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button id="execute-schedule-modal" onclick="executeSchedule()" type="button" class="execute-schedule btn btn-default" data-dismiss="modal">Execute Schedule</button>
+				</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="modal fade" id="MetricsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title">Throughput Metrics</h4>
+					</div>
+					<div class="modal-body">
+						<table class="table">
+							<thead>
+								<tr>
+									<th>Station</th>
+									<th>Block</th>
+									<th>Line</th>
+									<th title="Trains Since Execution">Throughput</th>
+								</tr>
+							</thead>
+							<tbody data-bind="foreach: trainsDataModel.stationsList">
+								<tr class="unselectable" data-bind="if: (Name != 'Block')">
+									<td data-bind="text: Name"></td>
+									<td data-bind="text: Block"></td>
+									<td data-bind="text: Line"></td>
+									<td title="Trains Since Execution" data-bind="text: Throughput"></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div id="main-container" class="flex row grow">
+		<div id="TrackStatus" class="flex row grow view-module">
+			<div id="train-picture" class="flex col static">
+				<div class="input-group" style="border-bottom: 2px solid #E7E7E7; padding-bottom: 5px;">
+					<span class="input-group-addon">Search</span>
+					<input id="track-search" type="text" class="form-control" data-bind="value: SearchTerm, valueUpdate: 'input', event: {keyup: clearSearch}">
+				</div>
+				<img src="TrainLines.png">
+			</div>
+			<div id="track-table-container" class="flex col grow">
+				<table class="table">
+					<thead>
+						<tr>
+							<th>Line</th>
+							<th>Section</th>
+							<th>Block</th>
+							<th>Status</th>
+							<th>Occupancy</th>
+						</tr>
+					</thead>
+					<tbody id="track-table-body" data-bind="foreach: TrackListFiltered">
+						<tr class="unselectable track-data-row" data-bind="click: $parent.selectTrack, attr: {'dataindex': $index}">
+							<td data-bind="text: Line"></td>
+							<td data-bind="text: Section"></td>
+							<td data-bind="text: Block_Number"></td>
+							<td data-bind="text: Status"></td>
+							<td data-bind="text: Occupancy"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div id="track-info-sidebar" class="flex col static" style="width: 400px">
+				<div id="no-row-indicator" class="flex col x-align y-align" style="height: 100%" data-bind="visible: currentTrackRow() < 0">
+					<h2>No Row Selected</h2>
+				</div>
+				<div id="track-info-wrapper" class="flex col grow" data-bind="visible: currentTrackRow() >= 0, with: currentRowObject">
+					<h2>Block Information</h2>
+					<table class="table" id="track-info-table">
+						<tr>
+							<td>Line</td>
+							<td><span data-bind="text: Line"></span></td>
+						</tr>
+						<tr>
+							<td>Section</td>
+							<td><span data-bind="text: Section"></span></td>
+						</tr>
+						<tr>
+							<td>Block</td>
+							<td><span data-bind="text: Block_Number"></span></td>
+						</tr>
+						<tr>
+							<td>Length</td>
+							<td><span data-bind="text: Block_Length * 3.28084"></span> Feet</td>
+						</tr>
+						<tr>
+							<td>Grade</td>
+							<td><span data-bind="text: Grade_Percent"></span></td>
+						</tr>
+						<tr>
+							<td>Speed Limit</td>
+							<td><span data-bind="text: truncateDecimalPlaces(Speed_Limit * 0.621371, 2)"></span> MPH</td>
+						</tr>
+						<tr>
+							<td>Infrastructure</td>
+							<td>
+								<span data-bind="text: Infrastructure"></span>
+								<span data-bind="if: Infrastructure.length == 0">None</span>					
+							</td>
+						</tr>
+						<tr>
+							<td>Elevation</td>
+							<td><span data-bind="text: truncateDecimalPlaces(Elevation * 3.28084, 2)"></span> Feet</td>
+						</tr>
+						<tr>
+							<td>Cumulative Elevation</td>
+							<td><span data-bind="text: truncateDecimalPlaces(Cumulative_Elevation * 3.28084, 2)"></span> Feet</td>
+						</tr>
+						<tr>
+							<td>Switch ID</td>
+							<td>
+								<span data-bind="text: Switch_Block"></span>
+								<span data-bind="if: Switch_Block.length == 0">None</span>					
+							</td>
+						</tr>
+						<tr>
+							<td>Arrow Direction</td>
+							<td>
+								<span data-bind="text: Arrow_Direction"></span>
+								<span data-bind="if: Arrow_Direction.length == 0">None</span>					
+							</td>
+						</tr>
+						<tr>
+							<td>Lights</td>
+							<td><span data-bind="text: Lights"></span></td>
+						</tr>
+						<tr>
+							<td>Weather</td>
+							<td><span data-bind="text: Weather"></span></td>
+						</tr>
+						<tr>
+							<td>Heater</td>
+							<td><span data-bind="text: Heater"></span></td>
+						</tr>
+						<tr>
+							<td>Track Status</td>
+							<td><span data-bind="text: Status"></span></td>
+						</tr>				
+					</table>
+					<h2 id="track-administration-header" >Administration</h2>
+					<div class="input-group">
+						<span class="input-group-addon">Maintenance</span>
+						<select class="fixheight" data-bind="value: Maintenance" onchange="trackSavedNotification(this)">
+							<option value="Open">Open</option>
+							<option value="Closed">Closed</option>
+						</select>
+					</div>
+					<div id="sidebar-saved-alert" class="alert alert-success" style="display: none">Changes Saved!</div>
+				</div>
+			</div>
+		
+		</div>
+		<div id="CrossingSwitches" class="flex row grow view-module">
+			<div class="container" style="padding-top: 20px">
+				<h2 style="display: inline;">Switches</h2>
+				<table class="table">
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Line</th>
+							<th>Block Numbers</th>
+							<th>Current Connection</th>
+						</tr>
+					</thead>
+					<tbody id="switch-list-body" data-bind="foreach: switchesList">
+						<tr class="unselectable">
+							<td data-bind="text: Name"></td>
+							<td data-bind="text: Line"></td>
+							<td data-bind="text: Block_Numbers[0] + ', ' + Block_Numbers[1] + ', ' + Block_Numbers[2]"></td>
+							<td data-bind="text: Connection[0] + ' to ' + Connection[1]"></td>
+						</tr>
+					</tbody>
+				</table>
+				<h2>Crossings</h2>
+				<table class="table">
+					<thead>
+						<tr>
+							<th>Line</th>
+							<th>Block Number</th>
+							<th>Status</th>
+						</tr>
+					</thead>
+					<tbody id="crossing-list-body" data-bind="foreach: crossingsList">
+						<tr class="unselectable">
+							<td data-bind="text: Line"></td>
+							<td data-bind="text: Block_Number"></td>
+							<td data-bind="text: Status"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div id="TrainInfo" class="flex row grow view-module">
+			<div id="train-table-container" class="flex col grow" style="margin-top: 15px">
+				<div class="btn-group" role="group" aria-label="..." stlye="width: 100%; position: relative">
+					<button id="add-train" type="button" class="btn btn-default" style="width: 25%" onclick="addTrain()">Add Train</button>
+					<button id="import-schedule" type="button" class="btn btn-default" style="width: 25%" data-toggle="modal" data-target="#ImportModal">Import Schedule</button>
+					<button id="export-schedule" type="button" class="btn btn-default" style="width: 25%" data-toggle="modal" data-target="#ExportModal" onclick="exportSchedule()">Export Schedule</button>
+					<button id="execute-schedule" type="button" class="btn btn-default" style="width: 25%" data-toggle="modal" data-target="#ExecuteModal">Execute Schedule</button>
+				</div>
+				<div style="padding-top: 5px;">
+					<table class="table">
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>ID</th>
+								<th>Line</th>
+								<th>Location Block</th>
+								<th>Suggested Speed</th>
+								<th>Authority</th>
+								<th>Next Destination</th>
+							</tr>
+						</thead>
+						<tbody id="train-list-body" data-bind="foreach: trainsList">
+							<tr class="train-data-row unselectable" data-bind="click: $parent.selectTrain, attr: {'dataindex': ID}">
+								<td data-bind="text: Name"></td>
+								<td data-bind="text: ID"></td>
+								<td data-bind="text: Line"></td>
+								<td data-bind="text: Block"></td>
+								<td data-bind="text: Suggested_Speed() + ' MPH'"></td>
+								<td data-bind="text: Authority() + ' Blocks'"></td>
+								<td data-bind="text: NextDestination"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div id="train-info-sidebar" class="flex col static" style="width: 400px">
+				<div id="no-train-indicator" class="flex col x-align y-align" style="height: 100%" data-bind="visible: currentTrainObject() == null">
+					<h2>No Train Selected</h2>
+				</div>
+				<div id="train-info-wrapper" class="flex col grow" data-bind="visible: currentTrainObject() != null, with: currentTrainObject">
+					<h2 class="heading">Edit Train Info</h2>
+					<div class="input-group">
+						<span class="input-group-addon">Train Name</span>
+						<input type="text" class="form-control" data-bind="value: Name">
+					</div>
+					<div class="input-group">
+						<span class="input-group-addon">Suggested Speed</span>
+						<input type="number" class="form-control" data-bind="value: Suggested_Speed">
+					</div>
+					<div class="input-group">
+						<span class="input-group-addon">Authority</span>
+						<input type="number" class="form-control" data-bind="value: Authority">
+					</div>
+					<div class="input-group">
+						<span class="input-group-addon">Schedule Start Time</span>
+						<input id="schedule-start-time" type="text" class="form-control" data-time-format="H:i" data-bind="value: startTime">
+					</div>
+					<h2 class="heading">Schedule a Stop</h2>
+					<div class="input-group">
+						<span class="input-group-addon">Line</span>
+						<select id="line-select" data-bind="value: Line" class="fixheight" onchange="lineSelectChanged()">
+							<option value="Green">Green</option>
+							<option value="Red">Red</option>
+						</select>
+						<span class="input-group-addon">Stops</span>
+						<select id="station-select" data-bind="foreach: $parent.stationsListFiltered" class="fixheight">
+							<option data-bind="text: Name + ': ' + Block, attr: {'data-name': Name, 'data-block': Block}"></option>
+						</select>
+					</div>
+					<div class="input-group">
+						<span class="input-group-addon">Arrival</span>
+						<input id="arrival-time" type="text" class="form-control" data-time-format="H:i">
+						<span class="input-group-addon">Dwell (Seconds)</span>
+						<input id="dwell-time" type="number" class="form-control">
+					</div>
+					<div class="btn-group" style="position: relative; width: 100%">
+						<button type="button" style="width: 30%"class="btn btn-default" onclick="addStop()">Add Stop</button>
+						<button type="button" style="width: 70%"class="btn btn-default" data-bind="click: trainsDataModel.currentTrainObject().activate, disable: !$parent.executing()"
+							title="Button: immediately sends schedule for execution, ignoring start time.">
+							Dispatch Now With Schedule
+						</button>
+					</div>
+					
+					<div class="flex col grow">
+						<table class="table">
+							<thead>
+								<tr style="font-size: 100%">
+									<th>Stop</th>
+									<th>Arrival Time</th>
+									<th>Dwell Time</th>
+								</tr>
+							</thead>
+							<tbody id="train-schedule-body" data-bind="foreach: $parent.currentTrainObject().Schedule">
+								<tr class="unselectable" data-bind="click: trainsDataModel.removeStop">
+									<td data-bind="text: fullStopName"></td>
+									<td data-bind="text: arrival"></td>
+									<td data-bind="text: dwell + 's'"></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="btn-group" style="position: relative; width: 100%">
+						<button type="button" class="btn btn-default" style="width: 50%" onclick="closeTrainSidebar()">Close</button>
+						<button id="delete-train" data-bind="disable: $parent.executing()" type="button" class="btn btn-danger" style="width: 50%" onclick="deleteSelectedTrain()">Delete Train</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+</body>
+</html>

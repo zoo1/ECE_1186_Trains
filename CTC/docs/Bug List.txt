@@ -1,0 +1,29 @@
+Bugs:
+
+Summary: Next destination was not being reset on update
+System Configuration: Justin's computer, Java 1.8
+Steps to reproduce: use MessageTester to send train location messages to the CTC Server
+Expected behavior: next destination should be set to the next destination or "None" if a train arrives at a location.
+Actual behavior: next destination remains the same.
+Fixed in: d48801c; CTC Server 3.2
+
+Summary: time modifier was able to have a value of zero.  This is bad for the train model, and I was requested to change this.
+System Configuration: Justin's computer, Java 1.8
+Steps to reproduce: press the pause button next to "current time," or change the time modifier to 0.
+Expected behavior: time modifier should be set to a very small value instead of zero to avoid problems in the train model.
+Actual behavior: the value was changed to zero.
+Fixed in: 2ad2f76; Time Modifier
+
+Summary: suggested speed and authority were sent as messages to the track controller even when a train was not yet created or the schedule was not yet active.
+System Configuration: Justin's computer, Java 1.8
+Steps to reproduce: update the suggested speed or authority before executing a schedule.
+Expected behavior: no updates to the track controller should be sent before schedule execution starts
+Actual behavior: suggested speed and authority are sent regardless of the schedule exeucting.
+Fixed in: df67379; Bugfixes
+
+Summary: suggested speed remained the same value even after authority was zero.
+System Configuration: Justin's computer, Java 1.8
+Steps to reproduce: use MessageTester to send location messages to the CTC server until the authority becomes zero.
+Expected behavior: suggested speed should become zero when authority is zero.
+Actual behavior: suggested speed retains its value even after the authority decreases to zero.
+Fixed in: 1fd0ac4; Bugfix
