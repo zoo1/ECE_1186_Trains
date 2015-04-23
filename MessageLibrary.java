@@ -1,13 +1,46 @@
+/* ------------------------------------------------- */
+/* ---------- Message Library: version 4.0 --------- */
+/* ------------------------------------------------- */
+
 import java.io.*;
 import java.util.*;
 import java.net.*;
 
-import javax.xml.ws.spi.http.HttpExchange;
-
-//import com.sun.net.*;
-
 
 public class MessageLibrary {
+	
+	public static void sendBlockingMessage(String hostName, int portNumber, String message) {
+		Socket hostSocket = null;
+		PrintWriter out = null;
+		BufferedReader in = null;
+		String line = null;
+		
+		// Open connection and wait for host
+		do {
+			try {
+				hostSocket = new Socket(hostName, portNumber);
+				out = new PrintWriter(hostSocket.getOutputStream(), true);
+				in = new BufferedReader(new InputStreamReader(hostSocket.getInputStream()));
+				line = in.readLine();
+			}
+			catch (Exception e) {}
+		} while (line == null);
+		
+		// Send message
+		out.println(message);
+		
+		// Close resources
+		try {
+			hostSocket.close();
+			out.close();
+			in.close();
+		}
+		catch (Exception e) {}
+	}
+	
+	public static void sendBlockingMessage(int portNumber, String message) {
+		sendBlockingMessage("localhost", portNumber, message);
+	}
 	
 	// Sends a message to another module with the specified hostname (localhost) and port.
 	public static void sendMessage(String hostName, int portNumber, String message) {
@@ -72,7 +105,6 @@ public class MessageLibrary {
 	
 	
 	
-	
 	// Reconstructs a hash table given an input string.
 	public static Hashtable<String, String> stringToHashtable(String input) {
 		Hashtable<String, String> result = new Hashtable<String, String>();
@@ -83,9 +115,5 @@ public class MessageLibrary {
 		}
 		return result;
 	}
-	
-	
-	
-	
 	
 }
