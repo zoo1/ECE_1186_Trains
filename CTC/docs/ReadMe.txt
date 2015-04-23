@@ -1,4 +1,6 @@
-ReadMe:
+Notes:
+
+Coding Standard: the default Java coding standard is followed, rather than the one set aside in previous documentation.  Java should look like Java.  http://www.oracle.com/technetwork/java/codeconvtoc-136057.html
 
 Authority: the total path distance, from the current location to the end stop.
 		   the train knows to when to stop at a station if there is a dwell time for that block.
