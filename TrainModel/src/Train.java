@@ -43,6 +43,7 @@ public class Train extends Thread {
     private volatile boolean engFail = false;
     private volatile boolean sigFail = false;
     private volatile boolean brakeFail = false;
+    private boolean shouldsend = true;
 
     public boolean isEngFail() {
         return engFail;
@@ -50,7 +51,7 @@ public class Train extends Thread {
 
     public void setEngFail(boolean engFail) {
         this.engFail = engFail;
-        MessageLibrary.sendMessage("localhost", TRAINCONTROLLER, "Train Model : " + UID + " :set, EngineFail=" + brakeFail);
+        MessageLibrary.sendMessage("localhost", TRAINCONTROLLER, "Train Model : " + UID + " :set, EngineFail=" + engFail);
     }
 
     public boolean isSigFail() {
@@ -244,7 +245,7 @@ public class Train extends Thread {
                     finalaccel = 0; //and stop acceleration (for position calc in next step)
                 }
             }
-            if(finalvelocity>currentBlock.getSpeed()) //Crash the train
+            if(finalvelocity>currentBlock.getSpeed() && position > 30) //Crash the train
             {
                 MessageLibrary.sendMessage("localhost", TRAINCONTROLLER, "Train Model : " + UID + " : delete");
                 MessageLibrary.sendMessage("localhost", TRACKMODEL, "Train Model : " + UID + " : delete");
@@ -272,10 +273,11 @@ public class Train extends Thread {
             {
                 MessageLibrary.sendMessage("localhost", TRAINCONTROLLER, "Train Model : " + UID + " : set, Position=" + position);
             }
-            if (velocity != finalvelocity&&running) 
+            if (velocity != finalvelocity&&running&&shouldsend) 
             {
                 MessageLibrary.sendMessage("localhost", TRAINCONTROLLER, "Train Model : " + UID + " : set, Actual Speed=" + finalvelocity);
             }
+            shouldsend = !shouldsend;
             velocity = finalvelocity;
             acceleration = finalaccel;
             try {

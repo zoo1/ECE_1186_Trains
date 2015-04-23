@@ -250,6 +250,7 @@ public class WebServer {
                         completeInput.append(inputLine);
                     }
                     evaluateString(completeInput.toString());
+                    clientSocket.close();
 // Message input complete. Do something with the message here.
                 } catch (IOException e) {
                     System.out.println("Error: Port listening exception on port " + MYLISTENSOCKET + ".");
@@ -295,7 +296,7 @@ public class WebServer {
                         } else if (sides[0].contains("Power")) {
                             double power = Double.valueOf(sides[1].replaceAll("\\s+", ""));
                             trains.get(UID).UpdatePower(power);
-                        } else if (sides[0].contains("Train Lights")) {
+                        } else if (sides[0].contains("Lights")) {
                             boolean lights=false;
                             if(sides[1].contains("On"))
                                 lights=true;
