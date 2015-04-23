@@ -2,8 +2,6 @@
 //Track Controller PLC
 //Prototype
 
-package src;
-
 import java.util.*;
 
 public class PLC {
